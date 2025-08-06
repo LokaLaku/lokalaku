@@ -42,7 +42,7 @@ h1,h2,h3,h4 {
 
 h1 {
   font-size: 32px;
-  line-height: 48px;
+  line-height: 32px;
   letter-spacing: 2px;
   text-transform: uppercase;
   padding-bottom: 8px;
@@ -671,6 +671,7 @@ footer {
   }
 
 }
+
 
 
 
