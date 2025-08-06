@@ -41,8 +41,9 @@ h1,h2,h3,h4 {
 }
 
 h1 {
+  color: ##ffffff;
   font-size: 32px;
-  line-height: 32px;
+  font-weight: bold;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -670,6 +671,7 @@ footer {
   }
 
 }
+
 
 
 
