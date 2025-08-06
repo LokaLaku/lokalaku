@@ -44,9 +44,12 @@
 .grid figcaption small {
 	font-size: 16px;
 	letter-spacing: 0px;
-
+	line-height: 1.6;
 }
 
+.grid figcaption small p {
+	margin-bottom: 12px; /* Jarak antar paragraf */
+}
 
 .grid figcaption a {
 	text-align: center;
