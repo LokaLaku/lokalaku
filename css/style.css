@@ -37,7 +37,7 @@ html {
 -----------------------------------------*/
 
 h1,h2,h3,h4 {
-  font-weight: 300;
+  font-weight: auto;
 }
 
 h1 {
@@ -50,7 +50,7 @@ h1 {
 
 h2 {
   color: #e35536;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -671,6 +671,7 @@ footer {
   }
 
 }
+
 
 
 
