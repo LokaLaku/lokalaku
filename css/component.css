@@ -42,13 +42,18 @@
 }
 
 .grid figcaption small {
-	font-size: 16px;
+	font-size: 14px;
 	letter-spacing: 0px;
 	line-height: 1.6;
 }
 
 .grid figcaption small p {
 	margin-bottom: 12px; /* Jarak antar paragraf */
+}
+
+.grid figcaption small ul li,
+.grid figcaption small ol li {
+	margin-bottom: 8px;
 }
 
 .grid figcaption a {
