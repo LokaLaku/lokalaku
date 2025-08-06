@@ -29,8 +29,8 @@
 	top: 0;
 	left: 0;
 	padding: 42px 22px;
-	background: #304352;
-	color: #ed4e6e;
+	background: #2c4d36;
+	color: #e35536;
 }
 
 .grid figcaption h1 {
@@ -43,7 +43,7 @@
 
 .grid figcaption small {
 	font-size: 16px;
-	letter-spacing: 1px;
+	letter-spacing: 0px;
 }
 
 .grid figcaption a {
@@ -51,7 +51,7 @@
 	padding: 5px 10px;
 	border-radius: 2px;
 	display: inline-block;
-	background: #e44c65;
+	background: #e35536;
 	color: #fff;
 }
 
