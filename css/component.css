@@ -42,11 +42,11 @@
 }
 
 .grid figcaption h1 {
-  	font-size: 26px;          /* Ukuran font */
-  	line-height: 26px;        /* Leading / Jarak antar baris */
-  	margin: 0;
-  	padding-bottom: 12px;
-  	color: #fff;
+	font-size: 1.6rem;
+	line-height: 2.2rem;
+	margin: 0;
+	padding-bottom: 12px;
+	color: #fff;
 }
 
 
