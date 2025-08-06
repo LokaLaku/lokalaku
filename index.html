@@ -358,8 +358,8 @@
             <p>If you'd like to visit these attractions, send us a message. Get great deals on every destination you choose.</p>
           </div>
 
-          <!-- ✅ Formspree Contact Form (Optimized) -->
-<!---           <form action="https://formspree.io/f/mldlpwzr" method="POST" class="wow fadeInUp" data-wow-delay="0.8s">
+<!-- ✅ Formspree Contact Form (Optimized) -->
+          <form action="https://formspree.io/f/mldlpwzr" method="POST" class="wow fadeInUp" data-wow-delay="0.8s">
             <div class="col-md-6 col-sm-6 form-group">
               <label for="name" class="sr-only">Your Name</label>
               <input name="name" id="name" type="text" class="form-control" placeholder="Your Name" required>
@@ -373,19 +373,19 @@
               <textarea name="message" id="message" rows="6" class="form-control" placeholder="Your Message" required></textarea>
             </div>
 
-            <!-- Anti-spam honeypot -->
-<!---            <input type="text" name="_gotcha" style="display:none">
+<!-- Anti-spam honeypot -->
+          <input type="text" name="_gotcha" style="display:none">
             
-            <!-- Redirect to thank-you page -->
-<!---            <input type="hidden" name="_redirect" value="https://lokalaku.vercel.app/thank-you.html">
+<!-- Redirect to thank-you page -->
+          <input type="hidden" name="_redirect" value="https://lokalaku.vercel.app/thank-you.html">
 
             <div class="col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6">
               <button type="submit" class="form-control btn btn-primary">Send Message</button>
             </div>
           </form>
 
-          <!-- WhatsApp Button -->
-<!---          <div class="col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 text-center wow fadeInUp" data-wow-delay="1s" style="margin-top: 20px;">
+ <!-- WhatsApp Button -->
+        <div class="col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 text-center wow fadeInUp" data-wow-delay="1s" style="margin-top: 20px;">
             <a href="https://wa.me/6281331421031?text=Hi%20LokaLaku%20Trip%2C%20I%27m%20interested%20in%20your%20tour%20packages!" 
                target="_blank" 
                class="btn btn-success btn-lg" 
@@ -393,51 +393,7 @@
                rel="noopener noreferrer">
               <i class="fa fa-whatsapp"></i> Contact via WhatsApp
             </a>
-          </div> --->
-
-			<div class="tm-section tm-section-pad tm-bg-img tm-position-relative" id="tm-section-6">
-                <div class="container ie-h-align-center-fix">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-7">
-                            <div id="google-map"></div>        
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-5 mt-3 mt-md-0">
-								<div class="tm-bg-white tm-p-4">
-<!-- ✅ Formspree Contact Form (Optimized) -->
-						<form action="https://formspree.io/f/mldlpwzr" method="POST" class="wow fadeInUp" data-wow-delay="0.8s">
-							<div class="col-md-6 col-sm-6 form-group">
-							<label for="name" class="sr-only">Your Name</label>
-							<input name="name" id="name" type="text" class="form-control" placeholder="Your Name" required>
-							</div>
-						<div class="col-md-6 col-sm-6 form-group">
-							<label for="email" class="sr-only">Your Email</label>
-							<input name="email" id="email" type="email" class="form-control" placeholder="Your Email" required>
-						</div>
-						<div class="col-md-12 col-sm-12 form-group">
-							<label for="message" class="sr-only">Your Message</label>
-							<textarea name="message" id="message" rows="6" class="form-control" placeholder="Your Message" required></textarea>
-						</div>
-
-<!-- Anti-spam honeypot -->
-						<input type="text" name="_gotcha" style="display:none">
-            
-<!-- Redirect to thank-you page -->
-						<input type="hidden" name="_redirect" value="https://lokalaku.vercel.app/thank-you.html">
-
-							<div class="col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6">
-							<button type="submit" class="form-control btn btn-primary">Send Message</button>
-							</div>
-						</form>
-<!-- WhatsApp Button -->
-					<div class="col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 text-center wow fadeInUp" data-wow-delay="1s" style="margin-top: 20px;">
-						<a href="https://wa.me/6281331421031?text=Hi%20LokaLaku%20Trip%2C%20I%27m%20interested%20in%20your%20tour%20packages!" 
-							target="_blank" 
-							class="btn btn-success btn-lg" 
-							style="width: 100%; font-size: 18px;"
-							rel="noopener noreferrer">
-							<i class="fa fa-whatsapp"></i> WhatsApp
-						</a>
-					</div>
+          </div>
                             </div>                            
                         </div>
                     </div>        
@@ -483,146 +439,11 @@
   <script src="js/smoothscroll.js" defer></script>
   <script src="js/wow.min.js" defer></script>
   <script src="js/custom.js" defer></script>
-<script>
-  
-              /* Google map
-            ------------------------------------------------*/
-            var map = '';
-            var center;
 
-            function initialize() {
-                var mapOptions = {
-                    zoom: 13,
-                    center: new google.maps.LatLng(-23.013104,-43.394365),
-                    scrollwheel: false
-                };
-
-                map = new google.maps.Map(document.getElementById('google-map'),  mapOptions);
-
-                google.maps.event.addDomListener(map, 'idle', function() {
-                  calculateCenter();
-              });
-
-                google.maps.event.addDomListener(window, 'resize', function() {
-                  map.setCenter(center);
-              });
-            }
-
-            function calculateCenter() {
-                center = map.getCenter();
-            }
-
-            function loadGoogleMap(){
-                var script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDVWt4rJfibfsEDvcuaChUaZRS5NXey1Cs&v=3.exp&sensor=false&' + 'callback=initialize';
-                document.body.appendChild(script);
-            } 
-
-            function setCarousel() {
-                
-                if ($('.tm-article-carousel').hasClass('slick-initialized')) {
-                    $('.tm-article-carousel').slick('destroy');
-                } 
-
-                if($(window).width() < 438){
-                    // Slick carousel
-                    $('.tm-article-carousel').slick({
-                        infinite: false,
-                        dots: true,
-                        slidesToShow: 1,
-                        slidesToScroll: 1
-                    });
-                }
-                else {
-                 $('.tm-article-carousel').slick({
-                        infinite: false,
-                        dots: true,
-                        slidesToShow: 2,
-                        slidesToScroll: 1
-                    });   
-                }
-            }
-
-            function setPageNav(){
-                if($(window).width() > 991) {
-                    $('#tm-top-bar').singlePageNav({
-                        currentClass:'active',
-                        offset: 79
-                    });   
-                }
-                else {
-                    $('#tm-top-bar').singlePageNav({
-                        currentClass:'active',
-                        offset: 65
-                    });   
-                }
-            }
-
-            function togglePlayPause() {
-                vid = $('.tmVideo').get(0);
-
-                if(vid.paused) {
-                    vid.play();
-                    $('.tm-btn-play').hide();
-                    $('.tm-btn-pause').show();
-                }
-                else {
-                    vid.pause();
-                    $('.tm-btn-play').show();
-                    $('.tm-btn-pause').hide();   
-                }  
-            }
-       
-            $(document).ready(function(){
-
-                $(window).on("scroll", function() {
-                    if($(window).scrollTop() > 100) {
-                        $(".tm-top-bar").addClass("active");
-                    } else {
-                        //remove the background property so it comes transparent again (defined in your css)
-                       $(".tm-top-bar").removeClass("active");
-                    }
-                });      
-
-                // Google Map
-                loadGoogleMap();  
-
-                // Date Picker
-                const pickerCheckIn = datepicker('#inputCheckIn');
-                const pickerCheckOut = datepicker('#inputCheckOut');
-                
-                // Slick carousel
-                setCarousel();
-                setPageNav();
-
-                $(window).resize(function() {
-                  setCarousel();
-                  setPageNav();
-                });
-
-                // Close navbar after clicked
-                $('.nav-link').click(function(){
-                    $('#mainNav').removeClass('show');
-                });
-
-                // Control video
-                $('.tm-btn-play').click(function() {
-                    togglePlayPause();                                      
-                });
-
-                $('.tm-btn-pause').click(function() {
-                    togglePlayPause();                                      
-                });
-
-                // Update the current year in copyright
-                $('.tm-current-year').text(new Date().getFullYear());                           
-            });
-
-        </script>    
 </body>
 
 </html>
+
 
 
 
