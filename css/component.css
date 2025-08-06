@@ -34,8 +34,8 @@
 }
 
 .grid figcaption h1 {
-	font-size: 20px;
-	line-height: 16px;
+	font-size: 24px;
+	line-height: 20px;
 	margin: 0;
 	padding-bottom: 5px;
 	color: #fff;
@@ -54,6 +54,8 @@
 	font-size: 12px;
 	letter-spacing: 0px;
 	line-height: 10px;
+	padding-bottom: 5px;
+
 }
 
 .grid figcaption a {
