@@ -722,16 +722,6 @@ footer {
 
 }
 
-
-
-
-
-
-
-
-
-
-
 /* Modal Slideshow Navigation */
 .slide-nav {
   margin: 10px 0;
@@ -740,5 +730,65 @@ footer {
   padding: 8px 12px;
   margin: 0 5px;
   font-size: 16px;
+  cursor: pointer;
+}
+
+body.modal-open {
+  overflow: hidden !important;
+}
+
+.custom-modal {
+  display: none !important;
+  position: fixed !important;
+  z-index: 999999 !important;
+  left: 0;
+  top: 0;
+  width: 100% !important;
+  height: 100% !important;
+  overflow-y: auto !important;
+  background-color: rgba(0,0,0,0.9) !important;
+}
+
+.custom-modal-content {
+  margin: 5% auto;
+  background: #fff;
+  padding: 20px;
+  max-width: 600px;
+  border-radius: 8px;
+  position: relative;
+  z-index: 1000000;
+  text-align: center;
+}
+
+.custom-modal-content img.slideshow-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.slide-caption {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.wa-button {
+  margin-top: 20px;
+  display: inline-block;
+  background-color: #25D366;
+  color: white;
+  padding: 12px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
   cursor: pointer;
 }
