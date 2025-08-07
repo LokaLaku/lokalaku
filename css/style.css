@@ -617,7 +617,7 @@ body.modal-open {
 }
 
 .custom-modal {
-  display: none !important;
+  display: none;
   position: fixed !important;
   z-index: 999999 !important;
   left: 0;
@@ -750,7 +750,7 @@ body.modal-open {
 }
 
 .custom-modal {
-  display: none !important;
+  display: none;
   position: fixed !important;
   z-index: 999999 !important;
   left: 0;
