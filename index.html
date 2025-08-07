@@ -399,12 +399,17 @@
 <script defer="" src="js/wow.min.js"></script>
 <script defer="" src="js/custom.js"></script>
 <script>
-	function openModal(id) {
-	document.getElementById(id).style.display = "block";
-	}
-	function closeModal(id) {
-	document.getElementById(id).style.display = "none";
+function openModal(id) {
+  document.getElementById(id).style.display = "block";
+  document.body.classList.add("modal-open");
+  window.scrollTo(0, 0);
 }
+
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+  document.body.classList.remove("modal-open");
+}
+
 </script>
 <!-- 1. Sikidang Crater -->
 
