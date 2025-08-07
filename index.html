@@ -11,12 +11,12 @@
 <meta content="LokaLaku is a travel service that offers meaningful and soulful journeys across Indonesia. Discover open trips to Bali, Lombok, Malang, and more." name="description"/>
 <meta content="LokaLaku Trip, open trip Indonesia, travel Yogyakarta Bali, tour Lombok Malang, paket wisata murah, explore Nusantara" name="keywords"/>
 <!-- Social Sharing -->
-<meta content="LokaLaku Trip - Where Every Journey Finds Its Soul" property="og:title">
-<meta content="LokaLaku is a travel service that offers meaningful and soulful journeys across Indonesia." property="og:description">
-<meta content="https://lokalaku.vercel.app/images/Logo.jpg" property="og:image"/>
-<meta content="LokaLaku Trip - Where Every Journey Finds Its Soul" property="og:image:alt"/>
-<meta content="https://lokalaku.vercel.app" property="og:url">
-<meta content="website" property="og:type"/>
+<meta content="LokaLaku Trip - Where Every Journey Finds Its Soul" property="og:title"/>
+<meta content="LokaLaku is a travel service that offers meaningful and soulful journeys across Indonesia." property="og:description"/>
+<meta content="https://lokalaku.vercel.app/images/Logo.jpg" property="og:image">
+<meta content="LokaLaku Trip - Where Every Journey Finds Its Soul" property="og:image:alt">
+<meta content="https://lokalaku.vercel.app" property="og:url"/>
+<meta content="website" property="og:type">
 <meta content="summary_large_image" name="twitter:card"/>
 <meta content="LokaLaku Trip - Where Every Journey Finds Its Soul" name="twitter:title"/>
 <meta content="LokaLaku is a travel service that offers meaningful and soulful journeys across Indonesia." name="twitter:description"/>
@@ -54,7 +54,44 @@
 <link href="css/v5-font-face.min.css" rel="stylesheet"/>
 <!-- Google web font  -->
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,300" rel="stylesheet" type="text/css"/>
-</meta></meta></meta></head>
+</meta></meta></meta><style>
+.custom-modal-content {
+  position: relative;
+  background-color: #fff;
+  padding: 20px;
+  margin: 10% auto;
+  width: 80%;
+  max-width: 700px;
+  border-radius: 8px;
+}
+
+.custom-modal {
+  display: none;
+  position: fixed;
+  z-index: 1050;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.close-button {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #000;
+}
+</style></head>
 <body data-offset="50" data-spy="scroll" data-target=".navbar-collapse" id="top">
 <!-- Preloader section -->
 <div class="preloader">
@@ -362,11 +399,6 @@
 </div>
 </div>
 </div>
-
-
-
-
-
 </section>
 <!-- Footer section -->
 <footer>
@@ -410,23 +442,26 @@ function closeModal(id) {
   document.body.classList.remove("modal-open");
 }
 
+
+
+window.addEventListener("click", function (event) {
+  const modals = document.querySelectorAll(".custom-modal");
+  modals.forEach((modal) => {
+    if (event.target === modal) {
+      modal.style.display = "none";
+      document.body.classList.remove("modal-open");
+    }
+  });
+});
 </script>
 <!-- 1. Sikidang Crater -->
-
 <!-- 2. Bromo – Lava Tour Merapi -->
-
 <!-- 3. Bromo – Ijen Blue Fire -->
-
 <!-- 4. Malang – Yogyakarta Explore 3D2N -->
-
 <!-- 5. Malang – Yogyakarta City Tour -->
-
 <!-- 6. Yogyakarta Explore 3D2N -->
-
 <!-- 7. Malang Tourism -->
-
 <!-- 8. Bali Tourism -->
-
 <script>
 const slides = {
   "modal-sikidang": ["images/gallery-img1.jpg", "images/gallery-img7.jpg", "images/gallery-img2.jpg", "images/gallery-img6.jpg", "images/gallery-img4.jpg", "images/gallery-img8.jpg", "images/gallery-img5.jpg", "images/gallery-img3.jpg"],
@@ -511,7 +546,7 @@ function prevSlide(modalId) {
 <span class="close-button" onclick="closeModal('modal-sikidang')">×</span>
 <img alt="Slideshow Image" class="slideshow-img" src="images/gallery-img1.jpg"/>
 <div class="slide-caption" style="margin-top: 10px; font-size: 16px; color: #333;"></div>
-<div class="slide-nav"><button onclick="prevSlide(\'modal-sikidang\')">❮ Prev</button><button onclick="nextSlide(\'modal-sikidang\')">Next ❯</button></div>
+
 <h2>Sikidang Crater</h2>
 <p>Discover the wonders of Sikidang Crater. A surreal volcanic experience with bubbling geysers and steaming earth!</p>
 <a class="wa-button" href="https://wa.me/6281331421031?text=Hi%2C%20I'm%20interested%20in%20booking%20the%20Sikidang%20Crater%20tour%20package." target="_blank">Book via WhatsApp</a>
@@ -521,7 +556,7 @@ function prevSlide(modalId) {
 <span class="close-button" onclick="closeModal('modal-bromo-merapi')">×</span>
 <img alt="Slideshow Image" class="slideshow-img" src="images/gallery-img1.jpg"/>
 <div class="slide-caption" style="margin-top: 10px; font-size: 16px; color: #333;"></div>
-<div class="slide-nav"><button onclick="prevSlide(\'modal-bromo-merapi\')">❮ Prev</button><button onclick="nextSlide(\'modal-bromo-merapi\')">Next ❯</button></div>
+
 <h2>Bromo – Lava Tour Merapi</h2>
 <p>Unforgettable adventure to Bromo and Merapi – Jeep rides, city tours, and nature thrills await you!</p>
 <a class="wa-button" href="https://wa.me/6281331421031?text=Hi%2C%20I'm%20interested%20in%20booking%20the%20Bromo%20–%20Lava%20Tour%20Merapi%20package." target="_blank">Book via WhatsApp</a>
@@ -531,7 +566,7 @@ function prevSlide(modalId) {
 <span class="close-button" onclick="closeModal('modal-bromo-ijen')">×</span>
 <img alt="Slideshow Image" class="slideshow-img" src="images/gallery-img1.jpg"/>
 <div class="slide-caption" style="margin-top: 10px; font-size: 16px; color: #333;"></div>
-<div class="slide-nav"><button onclick="prevSlide(\'modal-bromo-ijen\')">❮ Prev</button><button onclick="nextSlide(\'modal-bromo-ijen\')">Next ❯</button></div>
+
 <h2>Bromo – Ijen Blue Fire</h2>
 <p>Experience the magical blue flames of Ijen and the beauty of Mount Bromo in one thrilling journey.</p>
 <a class="wa-button" href="https://wa.me/6281331421031?text=Hi%2C%20I'd%20like%20to%20book%20the%20Bromo%20–%20Ijen%20Blue%20Fire%20package." target="_blank">Book via WhatsApp</a>
@@ -541,7 +576,7 @@ function prevSlide(modalId) {
 <span class="close-button" onclick="closeModal('modal-malang-jogja')">×</span>
 <img alt="Slideshow Image" class="slideshow-img" src="images/gallery-img1.jpg"/>
 <div class="slide-caption" style="margin-top: 10px; font-size: 16px; color: #333;"></div>
-<div class="slide-nav"><button onclick="prevSlide(\'modal-malang-jogja\')">❮ Prev</button><button onclick="nextSlide(\'modal-malang-jogja\')">Next ❯</button></div>
+
 <h2>Malang – Yogyakarta Explore 3D2N</h2>
 <p>Explore two amazing cities – Malang and Yogyakarta – in one unforgettable 3-day trip!</p>
 <a class="wa-button" href="https://wa.me/6281331421031?text=I'm%20interested%20in%20the%20Malang–Yogyakarta%203D2N%20tour." target="_blank">Book via WhatsApp</a>
@@ -551,7 +586,7 @@ function prevSlide(modalId) {
 <span class="close-button" onclick="closeModal('modal-citytour')">×</span>
 <img alt="Slideshow Image" class="slideshow-img" src="images/gallery-img1.jpg"/>
 <div class="slide-caption" style="margin-top: 10px; font-size: 16px; color: #333;"></div>
-<div class="slide-nav"><button onclick="prevSlide(\'modal-citytour\')">❮ Prev</button><button onclick="nextSlide(\'modal-citytour\')">Next ❯</button></div>
+
 <h2>Malang – Yogyakarta City Tour</h2>
 <p>An exciting 3-day adventure combining Malang’s charm and Yogyakarta’s cultural treasures.</p>
 <a class="wa-button" href="https://wa.me/6281331421031?text=I'd%20like%20to%20book%20the%20Malang–Yogyakarta%20City%20Tour%20package." target="_blank">Book via WhatsApp</a>
@@ -561,7 +596,7 @@ function prevSlide(modalId) {
 <span class="close-button" onclick="closeModal('modal-jogja')">×</span>
 <img alt="Slideshow Image" class="slideshow-img" src="images/gallery-img1.jpg"/>
 <div class="slide-caption" style="margin-top: 10px; font-size: 16px; color: #333;"></div>
-<div class="slide-nav"><button onclick="prevSlide(\'modal-jogja\')">❮ Prev</button><button onclick="nextSlide(\'modal-jogja\')">Next ❯</button></div>
+
 <h2>Yogyakarta Explore 3D2N</h2>
 <p>Enjoy Yogyakarta's best – from Lava Jeep Tours to iconic temples and cultural experiences!</p>
 <a class="wa-button" href="https://wa.me/6281331421031?text=Hi%2C%20I'm%20interested%20in%20the%20Yogyakarta%20Explore%203D2N%20package." target="_blank">Book via WhatsApp</a>
@@ -571,7 +606,7 @@ function prevSlide(modalId) {
 <span class="close-button" onclick="closeModal('modal-malang')">×</span>
 <img alt="Slideshow Image" class="slideshow-img" src="images/gallery-img1.jpg"/>
 <div class="slide-caption" style="margin-top: 10px; font-size: 16px; color: #333;"></div>
-<div class="slide-nav"><button onclick="prevSlide(\'modal-malang\')">❮ Prev</button><button onclick="nextSlide(\'modal-malang\')">Next ❯</button></div>
+
 <h2>Malang Tourism</h2>
 <p>Bring your family to enjoy the educational and fun destinations of Malang – perfect for kids and adults!</p>
 <a class="wa-button" href="https://wa.me/6281331421031?text=I'd%20like%20to%20book%20the%20Malang%20Tourism%20package." target="_blank">Book via WhatsApp</a>
@@ -581,7 +616,7 @@ function prevSlide(modalId) {
 <span class="close-button" onclick="closeModal('modal-bali')">×</span>
 <img alt="Slideshow Image" class="slideshow-img" src="images/gallery-img1.jpg"/>
 <div class="slide-caption" style="margin-top: 10px; font-size: 16px; color: #333;"></div>
-<div class="slide-nav"><button onclick="prevSlide(\'modal-bali\')">❮ Prev</button><button onclick="nextSlide(\'modal-bali\')">Next ❯</button></div>
+
 <h2>Bali Tourism</h2>
 <p>Explore the paradise island of Bali – beaches, temples, waterfalls, and unforgettable moments await you.</p>
 <a class="wa-button" href="https://wa.me/6281331421031?text=Hi%2C%20I'm%20interested%20in%20booking%20the%20Bali%20Tourism%20package." target="_blank">Book via WhatsApp</a>
