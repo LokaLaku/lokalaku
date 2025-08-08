@@ -576,6 +576,26 @@
   });
 	  
 </script>
+	 
+<script>
+  $(document).ready(function () {
+    $("#team-carousel").owlCarousel({
+      items: 3,
+      margin: 30,
+      loop: true,
+      autoplay: true,
+      autoplayTimeout: 3000,
+      autoplayHoverPause: true,
+      responsive: {
+        0: { items: 1 },
+        600: { items: 2 },
+        1000: { items: 3 }
+      }
+    });
+  });
+</script>
+
+	 
   <div class="custom-modal" id="modal-sikidang">
    <div class="custom-modal-content">
     <span class="close-button" onclick="closeModal('modal-sikidang')">
@@ -847,8 +867,7 @@
     </a>
   </div>
 </div>
-
-  <script>
+<script>
   function openModal(id) {
     const modal = document.getElementById(id);
     modal.style.display = "block";
