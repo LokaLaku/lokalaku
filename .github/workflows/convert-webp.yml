@@ -1,0 +1,27 @@
+# .github/workflows/convert-webp.yml
+name: Convert JPG to WebP
+
+on: [push]
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install WebP CLI
+        run: sudo apt install webp -y
+
+      - name: Convert JPG to WebP
+        run: |
+          find . -name "*.jpg" -exec sh -c 'for img; do cwebp "$img" -o "${img%.jpg}.webp"; done' sh {} +
+
+      - name: Commit WebP files
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add .
+          git commit -m "Auto convert JPG to WebP" || echo "Nothing to commit"
+          git push
