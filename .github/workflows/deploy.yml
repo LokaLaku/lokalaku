@@ -23,3 +23,52 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
+
+name: Minify & Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]  # atau ganti dengan branch kamu
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y webp
+          npm install -g html-minifier clean-css-cli terser
+
+      - name: Minify HTML files
+        run: |
+          find . -name "*.html" -exec html-minifier --collapse-whitespace --remove-comments --minify-css true --minify-js true -o {} {} \;
+
+      - name: Minify CSS files
+        run: |
+          find . -name "*.css" -exec sh -c 'cleancss -o "$1" "$1"' _ {} \;
+
+      - name: Minify JS files
+        run: |
+          find . -name "*.js" -exec sh -c 'terser "$1" -o "$1" --compress --mangle' _ {} \;
+
+      - name: Convert JPG/PNG to WebP
+        run: |
+          find ./images -type f \( -iname "*.jpg" -o -iname "*.png" \) | while read img; do
+            cwebp -q 80 "$img" -o "${img%.*}.webp"
+          done
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: '.'  # semua file minify & webp
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
