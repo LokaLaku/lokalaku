@@ -861,3 +861,49 @@ body.modal-open {
     transform: translateY(0);
   }
 }
+
+/* === Modal Improvements === */
+.custom-modal {
+  display: none;
+  position: fixed !important;
+  z-index: 999999 !important;
+  left: 0;
+  top: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgba(0,0,0,0.85) !important;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.custom-modal.show {
+  display: flex;
+}
+
+.custom-modal-content {
+  background: #fff;
+  padding: 20px;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 8px;
+  position: relative;
+  text-align: left;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Animasi Masuk & Keluar */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.95); }
+}
+
+/* Untuk list rata kiri di dalam modal */
+.modal-list-wrapper ul {
+  text-align: left;
+  padding-left: 20px;
+}
