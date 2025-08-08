@@ -591,19 +591,6 @@
 				</p>
 				<!-- ✅ List itinerary dalam 2 kolom -->
 				<div class="modal-list-wrapper" style="display: flex; flex-wrap: wrap; gap: 30px; margin-top: 10px;">
-					<ul style="flex: 1; min-width: 250px; padding-left: 20px;">
-						<li>2 Days 1 Night</li>
-						<li>Sikidang Crater</li>
-						<li>Arjuna Temple Complex</li>
-						<li>Sikunir Hill (Sunrise View)</li>
-						<li>Telaga Warna &amp; Telaga Pengilon</li>
-					</ul>
-					<ul style="flex: 1; min-width: 250px; padding-left: 20px;">
-						<li>Batu Pandang “Ratapan Angin” Viewpoint</li>
-						<li>Dieng Plateau Theater</li>
-					</ul>
-				</div>
-				<div class="modal-list-wrapper" style="display: flex; flex-wrap: wrap; gap: 30px; margin-top: 10px;">
  					 <ul style="flex: 1; min-width: 250px; padding-left: 20px;">
 					    <li>2 Days 1 Night</li>
  					   <li>Sikidang Crater</li>
@@ -1066,5 +1053,42 @@
 			  });
 			});
 		</script>
+
+		<script>
+		  function splitListItems(modalId) {
+		    const modal = document.getElementById(modalId);
+  			  const lists = modal.querySelectorAll('.modal-list-wrapper ul');
+
+  		  lists.forEach((ul) => {
+  		    const items = Array.from(ul.querySelectorAll('li'));
+  		    if (items.length > 5) {
+  		      const wrapper = ul.parentElement;
+    		    ul.remove(); // Hapus ul asli dulu
+
+    		    for (let i = 0; i < items.length; i += 5) {
+   		       const newUl = document.createElement('ul');
+   		       newUl.style.flex = "1";
+   		       newUl.style.minWidth = "250px";
+   		       newUl.style.paddingLeft = "20px";
+
+    		      items.slice(i, i + 5).forEach((li) => {
+            newUl.appendChild(li.cloneNode(true));
+          });
+
+          wrapper.appendChild(newUl);
+        }
+      }
+    });
+  }
+
+  function openModal(id) {
+    const modal = document.getElementById(id);
+    modal.style.display = "block";
+    document.body.classList.add("modal-open");
+    startSlideshow(id);
+    splitListItems(id); // ✅ Panggil saat buka modal
+  }
+</script>
+
 	</body>
 </html>
