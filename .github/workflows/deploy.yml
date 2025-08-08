@@ -1,0 +1,25 @@
+# .github/workflows/deploy.yml
+name: Deploy HTML to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]  # atau "master" kalau pakai itu
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload HTML files
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: '.'  # semua file dari root folder
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
