@@ -60,7 +60,7 @@
   position: relative;
   background-color: #fff;
   padding: 20px;
-  margin: 10% auto;
+  margin: 100px auto 20px auto;
   width: 80%;
   max-width: 700px;
   border-radius: 8px;
@@ -661,118 +661,31 @@
   <script defer="" src="js/custom.js">
   </script>
   <script>
-   function openModal(id) {
-  document.getElementById(id).style.display = "block";
-  document.body.classList.add("modal-open");
-  window.scrollTo(0, 0);
-}
+  function openModal(id) {
+    const modal = document.getElementById(id);
+    modal.style.display = "block";
+    document.body.classList.add("modal-open");
+    window.scrollTo(0, 0);
+  }
 
-function closeModal(id) {
-  document.getElementById(id).style.display = "none";
-  document.body.classList.remove("modal-open");
-}
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+    modal.style.display = "none";
+    document.body.classList.remove("modal-open");
+  }
 
-
-
-window.addEventListener("click", function (event) {
-  const modals = document.querySelectorAll(".custom-modal");
-  modals.forEach((modal) => {
-    if (event.target === modal) {
-      modal.style.display = "none";
-      document.body.classList.remove("modal-open");
-    }
+  window.addEventListener("click", function (event) {
+    const modals = document.querySelectorAll(".custom-modal");
+    modals.forEach((modal) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+        document.body.classList.remove("modal-open");
+      }
+    });
   });
-});
-  </script>
-  <!-- 1. Sikidang Crater -->
-  <!-- 2. Bromo – Lava Tour Merapi -->
-  <!-- 3. Bromo – Ijen Blue Fire -->
-  <!-- 4. Malang – Yogyakarta Explore 3D2N -->
-  <!-- 5. Malang – Yogyakarta City Tour -->
-  <!-- 6. Yogyakarta Explore 3D2N -->
-  <!-- 7. Malang Tourism -->
-  <!-- 8. Bali Tourism -->
-  <script>
-   const slides = {
-  "modal-sikidang": ["images/gallery-img1.jpg", "images/gallery-img7.jpg", "images/gallery-img2.jpg", "images/gallery-img6.jpg", "images/gallery-img4.jpg", "images/gallery-img8.jpg", "images/gallery-img5.jpg", "images/gallery-img3.jpg"],
-  "modal-bromo-merapi": ["images/gallery-img2.jpg", "images/gallery-img7.jpg", "images/gallery-img4.jpg", "images/gallery-img8.jpg", "images/gallery-img3.jpg", "images/gallery-img1.jpg", "images/gallery-img5.jpg", "images/gallery-img6.jpg"],
-  "modal-bromo-ijen": ["images/gallery-img3.jpg", "images/gallery-img8.jpg", "images/gallery-img2.jpg", "images/gallery-img5.jpg", "images/gallery-img4.jpg", "images/gallery-img7.jpg", "images/gallery-img1.jpg", "images/gallery-img6.jpg"],
-  "modal-malang-jogja": ["images/gallery-img4.jpg", "images/gallery-img2.jpg", "images/gallery-img8.jpg", "images/gallery-img7.jpg", "images/gallery-img3.jpg", "images/gallery-img5.jpg", "images/gallery-img1.jpg", "images/gallery-img6.jpg"],
-  "modal-citytour": ["images/gallery-img5.jpg", "images/gallery-img2.jpg", "images/gallery-img7.jpg", "images/gallery-img3.jpg", "images/gallery-img6.jpg", "images/gallery-img8.jpg", "images/gallery-img4.jpg", "images/gallery-img1.jpg"],
-  "modal-jogja": ["images/gallery-img6.jpg", "images/gallery-img2.jpg", "images/gallery-img8.jpg", "images/gallery-img1.jpg", "images/gallery-img5.jpg", "images/gallery-img4.jpg", "images/gallery-img3.jpg", "images/gallery-img7.jpg"],
-  "modal-malang": ["images/gallery-img7.jpg", "images/gallery-img1.jpg", "images/gallery-img2.jpg", "images/gallery-img4.jpg", "images/gallery-img5.jpg", "images/gallery-img6.jpg", "images/gallery-img3.jpg", "images/gallery-img8.jpg"],
-  "modal-bali": ["images/gallery-img8.jpg", "images/gallery-img3.jpg", "images/gallery-img4.jpg", "images/gallery-img5.jpg", "images/gallery-img6.jpg", "images/gallery-img1.jpg", "images/gallery-img2.jpg", "images/gallery-img7.jpg"],
-};
-
-const currentSlides = {};
-
-function openModal(id) {
-  document.getElementById(id).style.display = "block";
-  currentSlides[id] = 0;
-  showSlide(id, 0);
-}
-
-function closeModal(id) {
-  document.getElementById(id).style.display = "none";
-}
-
-const captions = {
-  "modal-sikidang": ["Sikidang Crater – volcanic magic", "Jatim Park – family fun", "Bromo Sunrise – breathtaking view", "Jeep Adventure – thrilling ride", "Malang Streets – colorful life", "Bali Beach – tropical bliss", "Yogyakarta Heritage – rich culture", "Ijen Blue Fire – natural wonder"],
-  "modal-bromo-merapi": ["Bromo Sunrise – breathtaking view", "Jatim Park – family fun", "Malang Streets – colorful life", "Bali Beach – tropical bliss", "Ijen Blue Fire – natural wonder", "Sikidang Crater – volcanic magic", "Yogyakarta Heritage – rich culture", "Jeep Adventure – thrilling ride"],
-  "modal-bromo-ijen": ["Ijen Blue Fire – natural wonder", "Bali Beach – tropical bliss", "Bromo Sunrise – breathtaking view", "Yogyakarta Heritage – rich culture", "Malang Streets – colorful life", "Jatim Park – family fun", "Sikidang Crater – volcanic magic", "Jeep Adventure – thrilling ride"],
-  "modal-malang-jogja": ["Malang Streets – colorful life", "Bromo Sunrise – breathtaking view", "Bali Beach – tropical bliss", "Jatim Park – family fun", "Ijen Blue Fire – natural wonder", "Yogyakarta Heritage – rich culture", "Sikidang Crater – volcanic magic", "Jeep Adventure – thrilling ride"],
-  "modal-citytour": ["Yogyakarta Heritage – rich culture", "Bromo Sunrise – breathtaking view", "Jatim Park – family fun", "Ijen Blue Fire – natural wonder", "Jeep Adventure – thrilling ride", "Bali Beach – tropical bliss", "Malang Streets – colorful life", "Sikidang Crater – volcanic magic"],
-  "modal-jogja": ["Jeep Adventure – thrilling ride", "Bromo Sunrise – breathtaking view", "Bali Beach – tropical bliss", "Sikidang Crater – volcanic magic", "Yogyakarta Heritage – rich culture", "Malang Streets – colorful life", "Ijen Blue Fire – natural wonder", "Jatim Park – family fun"],
-  "modal-malang": ["Jatim Park – family fun", "Sikidang Crater – volcanic magic", "Bromo Sunrise – breathtaking view", "Malang Streets – colorful life", "Yogyakarta Heritage – rich culture", "Jeep Adventure – thrilling ride", "Ijen Blue Fire – natural wonder", "Bali Beach – tropical bliss"],
-  "modal-bali": ["Bali Beach – tropical bliss", "Ijen Blue Fire – natural wonder", "Malang Streets – colorful life", "Yogyakarta Heritage – rich culture", "Jeep Adventure – thrilling ride", "Sikidang Crater – volcanic magic", "Bromo Sunrise – breathtaking view", "Jatim Park – family fun"],
-};
-function showSlide(modalId, index) {
-  const imgElement = document.querySelector(`#${modalId} .slideshow-img`);
-  if (!imgElement) return;
-
-  const images = slides[modalId];
-  currentSlides[modalId] = (index + images.length) % images.length;
-  imgElement.src = images[currentSlides[modalId]];
-}
-
-function showSlide(modalId, index) {
-  const imgElement = document.querySelector(`#${modalId} .slideshow-img`);
-  const captionElement = document.querySelector(`#${modalId} .slide-caption`);
-  if (!imgElement) return;
-
-  const images = slides[modalId];
-  const caps = captions[modalId];
-  currentSlides[modalId] = (index + images.length) % images.length;
-  imgElement.src = images[currentSlides[modalId]];
-  if (captionElement) {
-    captionElement.textContent = caps[currentSlides[modalId]];
-  }
-}
-
-function autoNext(modalId) {
-  if (document.getElementById(modalId).style.display === "block") {
-    nextSlide(modalId);
-  }
-}
-
-setInterval(() => {
-  for (let id in slides) {
-    autoNext(id);
-  }
-}, 4000); // change every 4 seconds
-
-
-
-function nextSlide(modalId) {
-  showSlide(modalId, currentSlides[modalId] + 1);
-}
-
-function prevSlide(modalId) {
-  showSlide(modalId, currentSlides[modalId] - 1);
-}
-  </script>
+</script>
   <div class="custom-modal" id="modal-sikidang">
-   <div class="custom-modal-content" style="margin: 100px 0 20px 50px;">
+   <div class="custom-modal-content">
     <span class="close-button" onclick="closeModal('modal-sikidang')">
      ×
     </span>
@@ -819,7 +732,7 @@ function prevSlide(modalId) {
    </div>
   </div>
   <div class="custom-modal" id="modal-bromo-merapi">
-   <div class="custom-modal-content" style="margin: 100px 0 20px 50px;">
+   <div class="custom-modal-content">
     <span class="close-button" onclick="closeModal('modal-bromo-merapi')">
      ×
     </span>
@@ -888,7 +801,7 @@ function prevSlide(modalId) {
    </div>
   </div>
   <div class="custom-modal" id="modal-bromo-ijen">
-   <div class="custom-modal-content" style="margin: 100px 0 20px 50px;">
+   <div class="custom-modal-content">
     <span class="close-button" onclick="closeModal('modal-bromo-ijen')">
      ×
     </span>
@@ -951,7 +864,7 @@ function prevSlide(modalId) {
    </div>
   </div>
   <div class="custom-modal" id="modal-malang-jogja">
-   <div class="custom-modal-content" style="margin: 100px 0 20px 50px;">
+   <div class="custom-modal-content">
     <span class="close-button" onclick="closeModal('modal-malang-jogja')">
      ×
     </span>
@@ -1006,7 +919,7 @@ function prevSlide(modalId) {
    </div>
   </div>
   <div class="custom-modal" id="modal-citytour">
-   <div class="custom-modal-content" style="margin: 100px 0 20px 50px;">
+   <div class="custom-modal-content">
     <span class="close-button" onclick="closeModal('modal-citytour')">
      ×
     </span>
@@ -1061,7 +974,7 @@ function prevSlide(modalId) {
    </div>
   </div>
   <div class="custom-modal" id="modal-jogja">
-   <div class="custom-modal-content" style="margin: 100px 0 20px 50px;">
+   <div class="custom-modal-content">
     <span class="close-button" onclick="closeModal('modal-jogja')">
      ×
     </span>
@@ -1107,7 +1020,7 @@ function prevSlide(modalId) {
    </div>
   </div>
   <div class="custom-modal" id="modal-malang">
-   <div class="custom-modal-content" style="margin: 100px 0 20px 50px;">
+   <div class="custom-modal-content">
     <span class="close-button" onclick="closeModal('modal-malang')">
      ×
     </span>
@@ -1151,7 +1064,7 @@ function prevSlide(modalId) {
    </div>
   </div>
   <div class="custom-modal" id="modal-bali">
-   <div class="custom-modal-content" style="margin: 100px 0 20px 50px;">
+   <div class="custom-modal-content">
     <span class="close-button" onclick="closeModal('modal-bali')">
      ×
     </span>
@@ -1190,21 +1103,28 @@ function prevSlide(modalId) {
    </div>
   </div>
   <script>
-   function openModal(id) {
-  const modal = document.getElementById(id);
-  modal.classList.add("show");
-  modal.style.animation = "fadeIn 0.3s ease-in-out";
-  document.body.classList.add("modal-open");
-}
+  function openModal(id) {
+    const modal = document.getElementById(id);
+    modal.style.display = "block";
+    document.body.classList.add("modal-open");
+    window.scrollTo(0, 0);
+  }
 
-function closeModal(id) {
-  const modal = document.getElementById(id);
-  modal.style.animation = "fadeOut 0.3s ease-in-out";
-  setTimeout(() => {
-    modal.classList.remove("show");
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+    modal.style.display = "none";
     document.body.classList.remove("modal-open");
-  }, 300);
-}
-  </script>
+  }
+
+  window.addEventListener("click", function (event) {
+    const modals = document.querySelectorAll(".custom-modal");
+    modals.forEach((modal) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+        document.body.classList.remove("modal-open");
+      }
+    });
+  });
+</script>
  </body>
 </html>
