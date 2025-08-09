@@ -1,61 +1,42 @@
-name: Backup to Google Drive
+name: Backup & Upload to Google Drive
 
 on:
-  workflow_dispatch: # bisa dijalankan manual
   schedule:
-    - cron: "0 0 * * *" # jalan tiap jam 00:00 UTC (07:00 WIB)
+    - cron: '0 0 * * *' # jalan setiap hari jam 00:00 UTC
+  workflow_dispatch: # bisa dijalankan manual
 
 jobs:
   backup:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Python
+      # 2. Setup Python (buat bikin timestamp)
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: 3.x
 
-      - name: Install dependencies
+      # 3. Generate file backup dengan timestamp
+      - name: Create backup file with timestamp
         run: |
-          pip install gdown google-api-python-client google-auth-httplib2 google-auth-oauthlib
+          TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')
+          echo "Backup created at $TIMESTAMP" > "database_backup_$TIMESTAMP.sql"
 
-      - name: Create service account JSON
-        run: echo "${{ secrets.GDRIVE_CREDENTIALS }}" > service_account.json
+      # 4. Upload sebagai artifact di GitHub
+      - name: Upload artifact to GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: database_backup
+          path: database_backup_*.sql
 
-      - name: Create backup zip
-        run: |
-          zip -r backup.zip .
-
+      # 5. Upload ke Google Drive
       - name: Upload to Google Drive
-        run: |
-          python <<EOF
-          from google.oauth2 import service_account
-          from googleapiclient.discovery import build
-          from googleapiclient.http import MediaFileUpload
-          import os
-
-          SCOPES = ["https://www.googleapis.com/auth/drive.file"]
-          SERVICE_ACCOUNT_FILE = "service_account.json"
-
-          creds = service_account.Credentials.from_service_account_file(
-              SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-
-          service = build('drive', 'v3', credentials=creds)
-
-          file_metadata = {
-              'name': 'backup.zip',
-              'parents': ['${{ secrets.GDRIVE_FOLDER_ID }}']
-          }
-          media = MediaFileUpload('backup.zip', mimetype='application/zip')
-
-          uploaded_file = service.files().create(
-              body=file_metadata,
-              media_body=media,
-              fields='id'
-          ).execute()
-
-          print("Uploaded file ID:", uploaded_file.get('id'))
-          EOF
+        uses: adityak74/google-drive-upload-git-action@main
+        with:
+          filename: database_backup_*.sql
+          folderId: ${{ secrets.GDRIVE_FOLDER_ID }}
+          credentials: ${{ secrets.GDRIVE_CREDENTIALS }}
