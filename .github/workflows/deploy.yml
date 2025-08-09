@@ -37,12 +37,13 @@ jobs:
     - name: Install WebP Tools
       run: sudo apt-get install -y webp
 
-    - name: Convert JPG/PNG to WebP and delete originals
+
+    - name: Convert JPG/PNG to WebP and delete originals (safe)
       run: |
-      find . -type f \( -iname "*.jpg" -o -iname "*.png" \) | while read img; 
-      do
-      cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
-      done
+        find . -type f \( -iname "*.jpg" -o -iname "*.png" \) -print0 | while IFS= read -r -d '' img; do
+          cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
+          done
+
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
