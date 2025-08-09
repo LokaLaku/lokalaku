@@ -10,53 +10,51 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Checkout full history supaya bisa commit
+    # 1. Checkout repository
     - name: Checkout Repository
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    # 2. Setup Node.js (untuk minifier)
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-
-    # 3. Install minifiers
-    - name: Install minifiers
-      run: |
-        npm install -g html-minifier terser clean-css-cli
-
-    # 4. Minify HTML
+    # 2. Minify HTML (jika html-minifier tersedia)
     - name: Minify HTML files
       run: |
-        find . -name "*.html" -exec html-minifier --collapse-whitespace --remove-comments --minify-css true --minify-js true -o {} {} \;
+        if command -v html-minifier >/dev/null 2>&1; then
+          find . -name "*.html" -exec html-minifier --collapse-whitespace --remove-comments --minify-css true --minify-js true -o {} {} \;
+        else
+          echo "⚠️ html-minifier tidak tersedia, skip minify HTML."
+        fi
 
-    # 5. Minify CSS
+    # 3. Minify CSS (jika cleancss tersedia)
     - name: Minify CSS files
       run: |
-        find . -name "*.css" -exec cleancss -o {} {} \;
+        if command -v cleancss >/dev/null 2>&1; then
+          find . -name "*.css" -exec cleancss -o {} {} \;
+        else
+          echo "⚠️ clean-css-cli tidak tersedia, skip minify CSS."
+        fi
 
-    # 6. Minify JS
+    # 4. Minify JS (jika terser tersedia)
     - name: Minify JS files
       run: |
-        find . -name "*.js" -exec terser --compress --mangle -o {} -- {} \;
-
-    # 7. Install & Convert JPG/PNG to WebP (gabungan + cek)
-    - name: Install & Convert JPG/PNG to WebP (safe)
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y webp
-        if ! command -v cwebp >/dev/null 2>&1; then
-          echo "❌ cwebp not installed!"
-          exit 1
+        if command -v terser >/dev/null 2>&1; then
+          find . -name "*.js" -exec terser --compress --mangle -o {} -- {} \;
+        else
+          echo "⚠️ terser tidak tersedia, skip minify JS."
         fi
-        echo "✅ cwebp installed, version: $(cwebp -version)"
-        find . -type f \( -iname "*.jpg" -o -iname "*.png" \) -print0 | while IFS= read -r -d '' img; do
-          cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
-        done
 
-    # 8. Commit hasil optimasi ke main
+    # 5. Convert JPG/PNG to WebP (jika cwebp tersedia)
+    - name: Convert JPG/PNG to WebP
+      run: |
+        if command -v cwebp >/dev/null 2>&1; then
+          find . -type f \( -iname "*.jpg" -o -iname "*.png" \) -print0 | while IFS= read -r -d '' img; do
+            cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
+          done
+        else
+          echo "⚠️ cwebp tidak tersedia, skip konversi WebP."
+        fi
+
+    # 6. Commit hasil optimasi
     - name: Commit optimized files
       run: |
         git config user.name "github-actions[bot]"
@@ -65,7 +63,7 @@ jobs:
         git commit -m "Optimize assets (minify + WebP)" || echo "No changes to commit"
         git push
 
-    # 9. Deploy ke GitHub Pages
+    # 7. Deploy ke GitHub Pages
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
