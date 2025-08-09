@@ -1,71 +1,35 @@
-name: Build LokaLaku (Node + Docker cache)
+name: Node.js CI with Cache
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
+    branches: [ "main" ]
 
 jobs:
-  build-node:
-    name: Build Node.js App
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      # 1. Checkout kode dari repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2. Setup Node.js + Cache otomatis berdasarkan package-lock.json
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: npm
+          cache: 'npm'
 
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
+      # 3. Install dependencies (lebih cepat dengan npm ci)
       - name: Install dependencies
         run: npm ci
 
-      - name: Build assets
+      # 4. Build project
+      - name: Run build
         run: npm run build
 
+      # 5. Jalankan test (opsional)
       - name: Run tests
         run: npm test
-
-  docker:
-    name: Build & Push Docker Image
-    runs-on: ubuntu-latest
-    needs: build-node
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to GHCR
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build & Push with Cache
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ghcr.io/${{ github.repository_owner }}/lokalaku:latest
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/lokalaku:cache
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/lokalaku:cache,mode=max
