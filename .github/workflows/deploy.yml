@@ -1,4 +1,4 @@
-name: Optimize & Deploy to GitHub Pages
+name: Backup, Optimize & Deploy to GitHub Pages
 
 on:
   push:
@@ -10,44 +10,70 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # 1️⃣ Checkout repository
     - name: Checkout Repository
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
         ref: main
 
+    # 2️⃣ Setup Node.js
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
 
-    - name: Ensure required tools
+    # 3️⃣ Install required tools once
+    - name: Install tools
       run: |
-        for tool in html-minifier terser clean-css-cli; do
-          command -v $tool >/dev/null 2>&1 || npm install -g $tool
-        done
-        command -v cwebp >/dev/null 2>&1 || {
-          sudo apt-get update
-          sudo apt-get install -y webp
-        }
+        npm install -g html-minifier-terser terser clean-css-cli purgecss
+        sudo apt-get update && sudo apt-get install -y webp
 
-    - name: Load minify cache
+    # 4️⃣ Create backup folder and backup
+    - name: Create backup folder and backup
+      run: |
+        mkdir -p backup
+        zip -r backup/project_backup_$(date +%Y%m%d_%H%M%S).zip .
+
+    - name: Upload backup artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: project-backup
+        path: backup/*.zip
+
+    # 4.5️⃣ Ensure .minify_cache exists
+    - name: Ensure .minify_cache exists
       run: |
         [ -f ".minify_cache" ] || touch ".minify_cache"
 
-    - name: Minify HTML files (skip unchanged)
+    # 5️⃣ Purge unused CSS
+    - name: Remove unused CSS
+      run: |
+        CACHE_FILE=".minify_cache"
+        find . -type f -name "*.css" -print0 | while IFS= read -r -d '' file; do
+          if [ "$file" -nt "$CACHE_FILE" ]; then
+            purgecss --css "$file" --content "**/*.html" "**/*.js" --output "$(dirname "$file")"
+            echo "✅ Purged $file"
+          else
+            echo "⏩ Skipped $file (no changes)"
+          fi
+        done
+
+    # 6️⃣ Minify HTML
+    - name: Minify HTML
       run: |
         CACHE_FILE=".minify_cache"
         find . -type f -name "*.html" -print0 | while IFS= read -r -d '' file; do
           if [ "$file" -nt "$CACHE_FILE" ]; then
-            html-minifier --collapse-whitespace --remove-comments --minify-css true --minify-js true -o "$file" "$file"
+            html-minifier-terser --collapse-whitespace --remove-comments --minify-css true --minify-js true -o "$file" "$file"
             echo "✅ Minified $file"
           else
-            echo "⏩ Skipped $file (no change)"
+            echo "⏩ Skipped $file (no changes)"
           fi
         done
 
-    - name: Minify CSS files (skip unchanged)
+    # 7️⃣ Minify CSS
+    - name: Minify CSS
       run: |
         CACHE_FILE=".minify_cache"
         find . -type f -name "*.css" -print0 | while IFS= read -r -d '' file; do
@@ -55,11 +81,12 @@ jobs:
             cleancss -o "$file" "$file"
             echo "✅ Minified $file"
           else
-            echo "⏩ Skipped $file (no change)"
+            echo "⏩ Skipped $file (no changes)"
           fi
         done
 
-    - name: Minify JS files (skip unchanged)
+    # 8️⃣ Minify JS
+    - name: Minify JS
       run: |
         CACHE_FILE=".minify_cache"
         find . -type f -name "*.js" -print0 | while IFS= read -r -d '' file; do
@@ -67,45 +94,60 @@ jobs:
             terser --compress --mangle -o "$file" -- "$file"
             echo "✅ Minified $file"
           else
-            echo "⏩ Skipped $file (no change)"
+            echo "⏩ Skipped $file (no changes)"
           fi
         done
 
-    - name: Convert JPG/PNG to WebP (skip unchanged)
+    # 9️⃣ Convert images JPG/PNG to WebP (replace originals)
+    - name: Convert images to WebP
       run: |
         CACHE_FILE=".minify_cache"
-        echo "cwebp version: $(cwebp -version)"
         find . -type f \( -iname "*.jpg" -o -iname "*.png" \) -print0 | while IFS= read -r -d '' img; do
           if [ "$img" -nt "$CACHE_FILE" ]; then
             cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
             echo "✅ Converted $img"
           else
-            echo "⏩ Skipped $img (no change)"
+            echo "⏩ Skipped $img (no changes)"
           fi
         done
 
-    - name: Update cache timestamp
+    # 🔟 Cleanup unused/temp files
+    - name: Cleanup unused files
       run: |
-        touch .minify_cache
+        find . -type f \( -name "*.tmp" -o -name "*.bak" -o -name "*~" \) -delete
+        find . -type f -empty -delete
 
-    # Tambahan: pastikan repo Git ada dan remote benar
-    - name: Setup Git for commit
+    # 1️⃣1️⃣ Backup unused images before removal
+    - name: Backup unused images
       run: |
-        if [ ! -d .git ]; then
-          git init
-          git remote add origin https://github.com/LokaLaku/lokalaku.git
-          git fetch origin
-          git checkout main || git checkout -b main
-        fi
+        mkdir -p backup_unused_images
+        find images assets/img uploads -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) | while IFS= read -r img; do
+          if ! grep -R "$(basename "$img")" . --exclude-dir=backup_unused_images --exclude-dir=node_modules > /dev/null; then
+            echo "Unused image detected: $img"
+            cp "$img" backup_unused_images/
+            rm "$img"
+          fi
+        done
+        echo "Unused image cleanup done, backups in backup_unused_images/"
+
+    # 1️⃣2️⃣ Setup Git config
+    - name: Setup Git
+      run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
 
-    - name: Commit optimized files
+    # 1️⃣3️⃣ Commit optimized files
+    - name: Commit changes
       run: |
         git add .
-        git commit -m "Optimize assets (minify + WebP)" || echo "No changes to commit"
+        git commit -m "Optimize assets (purge + minify + WebP)" || echo "No changes to commit"
         git push origin main
 
+    # 1️⃣4️⃣ Update .minify_cache timestamp
+    - name: Update .minify_cache timestamp
+      run: touch .minify_cache
+
+    # 1️⃣5️⃣ Deploy to GitHub Pages
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
@@ -113,3 +155,5 @@ jobs:
         publish_dir: .
         exclude_assets: |
           .git/*
+          backup/*
+          backup_unused_images/*
