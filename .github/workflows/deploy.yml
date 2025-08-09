@@ -10,79 +10,102 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Checkout repository
     - name: Checkout Repository
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        ref: main
 
-    # 2. Setup & Install Tools jika belum ada
-    - name: Ensure Minifiers & cwebp Installed
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Ensure required tools
       run: |
-        GREEN="\033[0;32m"
-        YELLOW="\033[1;33m"
-        NC="\033[0m" # No Color
-
-        check_or_install() {
-          TOOL_NAME=$1
-          INSTALL_CMD=$2
-          if command -v $TOOL_NAME >/dev/null 2>&1; then
-            echo -e "${GREEN}✅ $TOOL_NAME sudah tersedia.${NC}"
-          else
-            echo -e "${YELLOW}📦 Menginstall $TOOL_NAME...${NC}"
-            eval "$INSTALL_CMD"
-          fi
+        for tool in html-minifier terser clean-css-cli; do
+          command -v $tool >/dev/null 2>&1 || npm install -g $tool
+        done
+        command -v cwebp >/dev/null 2>&1 || {
+          sudo apt-get update
+          sudo apt-get install -y webp
         }
 
-        # HTML Minifier
-        check_or_install "html-minifier" "npm install -g html-minifier"
-
-        # CleanCSS
-        check_or_install "cleancss" "npm install -g clean-css-cli"
-
-        # Terser
-        check_or_install "terser" "npm install -g terser"
-
-        # cwebp
-        check_or_install "cwebp" "sudo apt-get update && sudo apt-get install -y webp"
-
-    # 3. Minify HTML
-    - name: Minify HTML files
+    - name: Load minify cache
       run: |
-        echo "🔹 Minifying HTML..."
-        find . -name "*.html" -exec html-minifier --collapse-whitespace --remove-comments --minify-css true --minify-js true -o {} {} \;
+        [ -f ".minify_cache" ] || touch ".minify_cache"
 
-    # 4. Minify CSS
-    - name: Minify CSS files
+    - name: Minify HTML files (skip unchanged)
       run: |
-        echo "🔹 Minifying CSS..."
-        find . -name "*.css" -exec cleancss -o {} {} \;
-
-    # 5. Minify JS
-    - name: Minify JS files
-      run: |
-        echo "🔹 Minifying JS..."
-        find . -name "*.js" -exec terser --compress --mangle -o {} -- {} \;
-
-    # 6. Convert JPG/PNG to WebP
-    - name: Convert JPG/PNG to WebP
-      run: |
-        echo "🔹 Converting images to WebP..."
-        find . -type f \( -iname "*.jpg" -o -iname "*.png" \) -print0 | while IFS= read -r -d '' img; do
-          cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
+        CACHE_FILE=".minify_cache"
+        find . -type f -name "*.html" -print0 | while IFS= read -r -d '' file; do
+          if [ "$file" -nt "$CACHE_FILE" ]; then
+            html-minifier --collapse-whitespace --remove-comments --minify-css true --minify-js true -o "$file" "$file"
+            echo "✅ Minified $file"
+          else
+            echo "⏩ Skipped $file (no change)"
+          fi
         done
 
-    # 7. Commit hasil optimasi
-    - name: Commit optimized files
+    - name: Minify CSS files (skip unchanged)
       run: |
-        echo "🔹 Committing changes..."
+        CACHE_FILE=".minify_cache"
+        find . -type f -name "*.css" -print0 | while IFS= read -r -d '' file; do
+          if [ "$file" -nt "$CACHE_FILE" ]; then
+            cleancss -o "$file" "$file"
+            echo "✅ Minified $file"
+          else
+            echo "⏩ Skipped $file (no change)"
+          fi
+        done
+
+    - name: Minify JS files (skip unchanged)
+      run: |
+        CACHE_FILE=".minify_cache"
+        find . -type f -name "*.js" -print0 | while IFS= read -r -d '' file; do
+          if [ "$file" -nt "$CACHE_FILE" ]; then
+            terser --compress --mangle -o "$file" -- "$file"
+            echo "✅ Minified $file"
+          else
+            echo "⏩ Skipped $file (no change)"
+          fi
+        done
+
+    - name: Convert JPG/PNG to WebP (skip unchanged)
+      run: |
+        CACHE_FILE=".minify_cache"
+        echo "cwebp version: $(cwebp -version)"
+        find . -type f \( -iname "*.jpg" -o -iname "*.png" \) -print0 | while IFS= read -r -d '' img; do
+          if [ "$img" -nt "$CACHE_FILE" ]; then
+            cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
+            echo "✅ Converted $img"
+          else
+            echo "⏩ Skipped $img (no change)"
+          fi
+        done
+
+    - name: Update cache timestamp
+      run: |
+        touch .minify_cache
+
+    # Tambahan: pastikan repo Git ada dan remote benar
+    - name: Setup Git for commit
+      run: |
+        if [ ! -d .git ]; then
+          git init
+          git remote add origin https://github.com/LokaLaku/lokalaku.git
+          git fetch origin
+          git checkout main || git checkout -b main
+        fi
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Commit optimized files
+      run: |
         git add .
         git commit -m "Optimize assets (minify + WebP)" || echo "No changes to commit"
-        git push
+        git push origin main
 
-    # 8. Deploy ke GitHub Pages
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
