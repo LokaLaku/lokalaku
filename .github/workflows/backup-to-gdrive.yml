@@ -1,7 +1,7 @@
 name: Backup to Google Drive
 
 on:
-  workflow_dispatch: # bisa jalan manual
+  workflow_dispatch: # bisa dijalankan manual
   schedule:
     - cron: "0 0 * * *" # jalan tiap jam 00:00 UTC (07:00 WIB)
 
@@ -23,7 +23,7 @@ jobs:
           pip install gdown google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
       - name: Create service account JSON
-        run: echo "${{ secrets.GDRIVE_SERVICE_ACCOUNT }}" > service_account.json
+        run: echo "${{ secrets.GDRIVE_CREDENTIALS }}" > service_account.json
 
       - name: Create backup zip
         run: |
@@ -34,6 +34,7 @@ jobs:
           python <<EOF
           from google.oauth2 import service_account
           from googleapiclient.discovery import build
+          from googleapiclient.http import MediaFileUpload
           import os
 
           SCOPES = ["https://www.googleapis.com/auth/drive.file"]
