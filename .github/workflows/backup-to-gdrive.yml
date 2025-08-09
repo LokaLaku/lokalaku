@@ -1,0 +1,60 @@
+name: Backup to Google Drive
+
+on:
+  workflow_dispatch: # bisa jalan manual
+  schedule:
+    - cron: "0 0 * * *" # jalan tiap jam 00:00 UTC (07:00 WIB)
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          pip install gdown google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
+      - name: Create service account JSON
+        run: echo "${{ secrets.GDRIVE_SERVICE_ACCOUNT }}" > service_account.json
+
+      - name: Create backup zip
+        run: |
+          zip -r backup.zip .
+
+      - name: Upload to Google Drive
+        run: |
+          python <<EOF
+          from google.oauth2 import service_account
+          from googleapiclient.discovery import build
+          import os
+
+          SCOPES = ["https://www.googleapis.com/auth/drive.file"]
+          SERVICE_ACCOUNT_FILE = "service_account.json"
+
+          creds = service_account.Credentials.from_service_account_file(
+              SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
+          service = build('drive', 'v3', credentials=creds)
+
+          file_metadata = {
+              'name': 'backup.zip',
+              'parents': ['${{ secrets.GDRIVE_FOLDER_ID }}']
+          }
+          media = MediaFileUpload('backup.zip', mimetype='application/zip')
+
+          uploaded_file = service.files().create(
+              body=file_metadata,
+              media_body=media,
+              fields='id'
+          ).execute()
+
+          print("Uploaded file ID:", uploaded_file.get('id'))
+          EOF
