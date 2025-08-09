@@ -39,8 +39,20 @@ jobs:
     - name: Install WebP Tools
       run: sudo apt-get install -y webp
 
-    - name: Convert JPG/PNG to WebP and delete originals (safe)
+    - name: Install & Convert JPG/PNG to WebP (safe)
       run: |
+        # Install WebP tools
+        sudo apt-get update
+        sudo apt-get install -y webp
+
+        # Cek apakah cwebp terinstall
+        if ! command -v cwebp >/dev/null 2>&1; then
+          echo "❌ cwebp not installed!"
+          exit 1
+        fi
+        echo "✅ cwebp installed, version: $(cwebp -version)"
+
+        # Konversi JPG/PNG ke WebP dan hapus file asli
         find . -type f \( -iname "*.jpg" -o -iname "*.png" \) -print0 | while IFS= read -r -d '' img; do
           cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
         done
