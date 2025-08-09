@@ -10,26 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1️⃣ Checkout repository
     - name: Checkout Repository
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
         ref: main
 
-    # 2️⃣ Setup Node.js
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
 
-    # 3️⃣ Install required tools once
     - name: Install tools
       run: |
         npm install -g html-minifier-terser terser clean-css-cli purgecss
         sudo apt-get update && sudo apt-get install -y webp
 
-    # 4️⃣ Create backup folder and backup
     - name: Create backup folder and backup
       run: |
         mkdir -p backup
@@ -41,12 +37,10 @@ jobs:
         name: project-backup
         path: backup/*.zip
 
-    # 4.5️⃣ Ensure .minify_cache exists
     - name: Ensure .minify_cache exists
       run: |
         [ -f ".minify_cache" ] || touch ".minify_cache"
 
-    # 5️⃣ Purge unused CSS
     - name: Remove unused CSS
       run: |
         CACHE_FILE=".minify_cache"
@@ -59,7 +53,6 @@ jobs:
           fi
         done
 
-    # 6️⃣ Minify HTML
     - name: Minify HTML
       run: |
         CACHE_FILE=".minify_cache"
@@ -72,7 +65,6 @@ jobs:
           fi
         done
 
-    # 7️⃣ Minify CSS
     - name: Minify CSS
       run: |
         CACHE_FILE=".minify_cache"
@@ -85,7 +77,6 @@ jobs:
           fi
         done
 
-    # 8️⃣ Minify JS
     - name: Minify JS
       run: |
         CACHE_FILE=".minify_cache"
@@ -98,7 +89,6 @@ jobs:
           fi
         done
 
-    # 9️⃣ Convert images JPG/PNG to WebP (replace originals)
     - name: Convert images to WebP
       run: |
         CACHE_FILE=".minify_cache"
@@ -111,13 +101,11 @@ jobs:
           fi
         done
 
-    # 🔟 Cleanup unused/temp files
     - name: Cleanup unused files
       run: |
         find . -type f \( -name "*.tmp" -o -name "*.bak" -o -name "*~" \) -delete
         find . -type f -empty -delete
 
-    # 1️⃣1️⃣ Backup unused images before removal
     - name: Backup unused images
       run: |
         mkdir -p backup_unused_images
@@ -130,24 +118,28 @@ jobs:
         done
         echo "Unused image cleanup done, backups in backup_unused_images/"
 
-    # 1️⃣2️⃣ Setup Git config
-    - name: Setup Git
+    # Setup Git config and debug status
+    - name: Setup Git and Debug Status
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
+        echo "=== Git Status ==="
+        git status
+        echo "=== Git Branches ==="
+        git branch -vv
 
-    # 1️⃣3️⃣ Commit optimized files
-    - name: Commit changes
+    # Commit changes and push
+    - name: Commit and Push changes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git add .
         git commit -m "Optimize assets (purge + minify + WebP)" || echo "No changes to commit"
         git push origin main
 
-    # 1️⃣4️⃣ Update .minify_cache timestamp
     - name: Update .minify_cache timestamp
       run: touch .minify_cache
 
-    # 1️⃣5️⃣ Deploy to GitHub Pages
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
