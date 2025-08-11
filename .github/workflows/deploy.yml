@@ -89,15 +89,19 @@ jobs:
           fi
         done
 
-    - name: Convert images to WebP
+    - name: Convert images to WebP & cleanup originals
       run: |
         CACHE_FILE=".minify_cache"
-        find . -type f \( -iname "*.jpg" -o -iname "*.png" \) -print0 | while IFS= read -r -d '' img; do
+        find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -print0 | while IFS= read -r -d '' img; do
+          webp_file="${img%.*}.webp"
           if [ "$img" -nt "$CACHE_FILE" ]; then
-            cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
-            echo "✅ Converted $img"
+            cwebp -q 80 "$img" -o "$webp_file" && rm "$img"
+            echo "✅ Converted $img to WebP and removed original"
+          elif [ -f "$webp_file" ]; then
+            rm "$img"
+            echo "🗑 Removed $img (already has WebP version)"
           else
-            echo "⏩ Skipped $img (no changes)"
+            echo "⏩ Skipped $img (no changes and no WebP version)"
           fi
         done
 
@@ -118,7 +122,6 @@ jobs:
         done
         echo "Unused image cleanup done, backups in backup_unused_images/"
 
-    # Setup Git config and debug status
     - name: Setup Git and Debug Status
       run: |
         git config user.name "github-actions[bot]"
@@ -128,7 +131,6 @@ jobs:
         echo "=== Git Branches ==="
         git branch -vv
 
-    # Commit changes and push
     - name: Commit and Push changes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
