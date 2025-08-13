@@ -40,15 +40,46 @@ jobs:
             terser "$js" -o "${js%.js}.min.js" -c -m
           done
 
-      # 6️⃣ Convert JPG/PNG to WebP
-      - name: Convert images to WebP
+      # 6️⃣ Convert JPG/PNG to WebP & Hapus file asli
+      - name: Convert images to WebP and remove originals
         run: |
           find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | while read img; do
-            cwebp -q 80 "$img" -o "${img%.*}.webp"
+            cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
           done
 
-      # 7️⃣ Save build output (artifacts) for deploy jobs
+      # 7️⃣ Save build output (artifacts) untuk deploy jobs
       - name: Upload build files
         uses: actions/upload-artifact@v4
         with:
-          name
+          name: site-files
+          path: .
+
+  deploy_github:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build files
+        uses: actions/download-artifact@v4
+        with:
+          name: site-files
+          path: .
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          force_orphan: true
+
+  deploy_vercel:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build files
+        uses: actions/download-artifact@v4
+        with:
+          name: site-files
+          path: .
+      - name: Deploy to Vercel
+        run: |
+          npm install -g vercel
+          vercel --token=${{ secrets.VERCEL_TOKEN }} --prod --confirm
