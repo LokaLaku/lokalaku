@@ -22,9 +22,11 @@ jobs:
         with:
           node-version: '20'
 
-      # 3️⃣ Install CLI tools
+      # 3️⃣ Install CLI tools & libwebp
       - name: Install dependencies
-        run: npm install -g terser csso-cli cwebp
+        run: |
+          npm install -g terser csso-cli
+          sudo apt-get update && sudo apt-get install -y webp
 
       # 4️⃣ Minify CSS
       - name: Minify CSS
@@ -40,14 +42,14 @@ jobs:
             terser "$js" -o "${js%.js}.min.js" -c -m
           done
 
-      # 6️⃣ Convert JPG/PNG to WebP & Hapus file asli
+      # 6️⃣ Convert JPG/PNG to WebP & hapus file asli
       - name: Convert images to WebP and remove originals
         run: |
           find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | while read img; do
             cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
           done
 
-      # 7️⃣ Save build output (artifacts) untuk deploy jobs
+      # 7️⃣ Upload artifacts untuk deploy jobs
       - name: Upload build files
         uses: actions/upload-artifact@v4
         with:
