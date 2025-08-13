@@ -42,19 +42,18 @@ jobs:
             terser "$js" -o "${js%.js}.min.js" -c -m
           done
 
-      # 6️⃣ Convert JPG/PNG to WebP & hapus file asli
+      # 6️⃣ Convert JPG/PNG (case-insensitive) to WebP & hapus file asli
       - name: Convert images to WebP and remove originals
         run: |
           shopt -s nullglob
-          imgs=( $(find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \)) )
-          if [ ${#imgs[@]} -eq 0 ]; then
-            echo "No JPG/PNG files found. Skipping conversion."
-          else
-            for img in "${imgs[@]}"; do
-              echo "Converting: $img"
-              cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
-            done
-          fi
+          while IFS= read -r -d '' img; do
+            echo "Converting: $img"
+            if cwebp -q 80 "$img" -o "${img%.*}.webp"; then
+              rm "$img"
+            else
+              echo "❌ Failed to convert: $img"
+            fi
+          done < <(find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -print0)
 
       # 7️⃣ Upload artifacts untuk deploy
       - name: Upload build files
