@@ -1,4 +1,4 @@
-name: Backup, Optimize & Deploy to GitHub Pages
+name: Build & Deploy to GitHub Pages and Vercel
 
 on:
   push:
@@ -10,144 +10,63 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        ref: main
+      # 1️⃣ Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      # 2️⃣ Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: Install tools
-      run: |
-        npm install -g html-minifier-terser terser clean-css-cli purgecss
-        sudo apt-get update && sudo apt-get install -y webp
+      # 3️⃣ Install dependencies (opsional, hanya jika perlu)
+      - name: Install dependencies
+        run: npm install -g terser csso-cli cwebp
 
-    - name: Create backup folder and backup
-      run: |
-        mkdir -p backup
-        zip -r backup/project_backup_$(date +%Y%m%d_%H%M%S).zip .
+      # 4️⃣ Minify CSS
+      - name: Minify CSS
+        run: |
+          find . -type f -name "*.css" ! -name "*.min.css" | while read css; do
+            csso "$css" --output "${css%.css}.min.css"
+          done
 
-    - name: Upload backup artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: project-backup
-        path: backup/*.zip
+      # 5️⃣ Minify JS
+      - name: Minify JS
+        run: |
+          find . -type f -name "*.js" ! -name "*.min.js" | while read js; do
+            terser "$js" -o "${js%.js}.min.js" -c -m
+          done
 
-    - name: Ensure .minify_cache exists
-      run: |
-        [ -f ".minify_cache" ] || touch ".minify_cache"
+      # 6️⃣ Convert JPG/PNG to WebP
+      - name: Convert images to WebP
+        run: |
+          find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | while read img; do
+            cwebp -q 80 "$img" -o "${img%.*}.webp"
+          done
 
-    - name: Remove unused CSS
-      run: |
-        CACHE_FILE=".minify_cache"
-        find . -type f -name "*.css" -print0 | while IFS= read -r -d '' file; do
-          if [ "$file" -nt "$CACHE_FILE" ]; then
-            purgecss --css "$file" --content "**/*.html" "**/*.js" --output "$(dirname "$file")"
-            echo "✅ Purged $file"
-          else
-            echo "⏩ Skipped $file (no changes)"
-          fi
-        done
+  deploy_github:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          force_orphan: true
 
-    - name: Minify HTML
-      run: |
-        CACHE_FILE=".minify_cache"
-        find . -type f -name "*.html" -print0 | while IFS= read -r -d '' file; do
-          if [ "$file" -nt "$CACHE_FILE" ]; then
-            html-minifier-terser --collapse-whitespace --remove-comments --minify-css true --minify-js true -o "$file" "$file"
-            echo "✅ Minified $file"
-          else
-            echo "⏩ Skipped $file (no changes)"
-          fi
-        done
-
-    - name: Minify CSS
-      run: |
-        CACHE_FILE=".minify_cache"
-        find . -type f -name "*.css" -print0 | while IFS= read -r -d '' file; do
-          if [ "$file" -nt "$CACHE_FILE" ]; then
-            cleancss -o "$file" "$file"
-            echo "✅ Minified $file"
-          else
-            echo "⏩ Skipped $file (no changes)"
-          fi
-        done
-
-    - name: Minify JS
-      run: |
-        CACHE_FILE=".minify_cache"
-        find . -type f -name "*.js" -print0 | while IFS= read -r -d '' file; do
-          if [ "$file" -nt "$CACHE_FILE" ]; then
-            terser --compress --mangle -o "$file" -- "$file"
-            echo "✅ Minified $file"
-          else
-            echo "⏩ Skipped $file (no changes)"
-          fi
-        done
-
-    - name: Convert images to WebP & cleanup originals
-      run: |
-        CACHE_FILE=".minify_cache"
-        find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -print0 | while IFS= read -r -d '' img; do
-          webp_file="${img%.*}.webp"
-          if [ "$img" -nt "$CACHE_FILE" ]; then
-            cwebp -q 80 "$img" -o "$webp_file" && rm "$img"
-            echo "✅ Converted $img to WebP and removed original"
-          elif [ -f "$webp_file" ]; then
-            rm "$img"
-            echo "🗑 Removed $img (already has WebP version)"
-          else
-            echo "⏩ Skipped $img (no changes and no WebP version)"
-          fi
-        done
-
-    - name: Cleanup unused files
-      run: |
-        find . -type f \( -name "*.tmp" -o -name "*.bak" -o -name "*~" \) -delete
-        find . -type f -empty -delete
-
-    - name: Backup unused images
-      run: |
-        mkdir -p backup_unused_images
-        find images assets/img uploads -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) | while IFS= read -r img; do
-          if ! grep -R "$(basename "$img")" . --exclude-dir=backup_unused_images --exclude-dir=node_modules > /dev/null; then
-            echo "Unused image detected: $img"
-            cp "$img" backup_unused_images/
-            rm "$img"
-          fi
-        done
-        echo "Unused image cleanup done, backups in backup_unused_images/"
-
-    - name: Setup Git and Debug Status
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        echo "=== Git Status ==="
-        git status
-        echo "=== Git Branches ==="
-        git branch -vv
-
-    - name: Commit and Push changes
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        git add .
-        git commit -m "Optimize assets (purge + minify + WebP)" || echo "No changes to commit"
-        git push origin main
-
-    - name: Update .minify_cache timestamp
-      run: touch .minify_cache
-
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: .
-        exclude_assets: |
-          .git/*
-          backup/*
-          backup_unused_images/*
+  deploy_vercel:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy to Vercel
+        run: |
+          npm install -g vercel
+          vercel --token=${{ secrets.VERCEL_TOKEN }} --prod --confirm
