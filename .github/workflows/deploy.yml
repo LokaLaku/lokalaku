@@ -22,11 +22,10 @@ jobs:
         with:
           node-version: '20'
 
-      # 3️⃣ Install CLI tools & libwebp
+      # 3️⃣ Install CLI tools (CSS, JS, HTML minifier)
       - name: Install dependencies
         run: |
-          npm install -g terser csso-cli
-          sudo apt-get update && sudo apt-get install -y webp
+          npm install -g terser csso-cli html-minifier-terser
 
       # 4️⃣ Minify CSS
       - name: Minify CSS
@@ -42,20 +41,45 @@ jobs:
             terser "$js" -o "${js%.js}.min.js" -c -m
           done
 
-      # 6️⃣ Convert JPG/PNG (case-insensitive) to WebP & hapus file asli
-      - name: Convert images to WebP and remove originals
+      # 6️⃣ Minify HTML (Safe Mode)
+      - name: Minify HTML
         run: |
-          shopt -s nullglob
+          find . -type f -name "*.html" | while read html; do
+            html-minifier-terser \
+              --collapse-whitespace \
+              --remove-comments \
+              --remove-redundant-attributes \
+              --remove-script-type-attributes \
+              --remove-style-link-type-attributes \
+              --use-short-doctype \
+              --minify-css true \
+              --minify-js true \
+              --ignore-custom-comments "^\[if|^\/|^google|^\/google" \
+              -o "$html" "$html"
+          done
+
+      # 7️⃣ Cek & Install cwebp, Kompres gambar → WebP
+      - name: Check & Install cwebp, Compress Images
+        run: |
+          if ! command -v cwebp &> /dev/null; then
+            echo "cwebp not found, installing..."
+            sudo apt-get update && sudo apt-get install -y webp
+          else
+            echo "cwebp already installed: $(cwebp -version)"
+          fi
+          echo "Starting image compression..."
+          find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -print0 | \
           while IFS= read -r -d '' img; do
             echo "Converting: $img"
             if cwebp -q 80 "$img" -o "${img%.*}.webp"; then
               rm "$img"
+              echo "✅ Converted and removed original: $img"
             else
               echo "❌ Failed to convert: $img"
             fi
-          done < <(find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -print0)
+          done
 
-      # 7️⃣ Upload artifacts untuk deploy
+      # 8️⃣ Upload artifacts untuk deploy
       - name: Upload build files
         uses: actions/upload-artifact@v4
         with:
