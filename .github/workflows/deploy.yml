@@ -1,4 +1,4 @@
-name: Build & Deploy to GitHub Pages and Vercel
+name: Build & Deploy to GitHub Pages
 
 on:
   push:
@@ -45,11 +45,18 @@ jobs:
       # 6️⃣ Convert JPG/PNG to WebP & hapus file asli
       - name: Convert images to WebP and remove originals
         run: |
-          find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | while read img; do
-            cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
-          done
+          shopt -s nullglob
+          imgs=( $(find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \)) )
+          if [ ${#imgs[@]} -eq 0 ]; then
+            echo "No JPG/PNG files found. Skipping conversion."
+          else
+            for img in "${imgs[@]}"; do
+              echo "Converting: $img"
+              cwebp -q 80 "$img" -o "${img%.*}.webp" && rm "$img"
+            done
+          fi
 
-      # 7️⃣ Upload artifacts untuk deploy jobs
+      # 7️⃣ Upload artifacts untuk deploy
       - name: Upload build files
         uses: actions/upload-artifact@v4
         with:
@@ -71,17 +78,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
           force_orphan: true
-
-  deploy_vercel:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download build files
-        uses: actions/download-artifact@v4
-        with:
-          name: site-files
-          path: .
-      - name: Deploy to Vercel
-        run: |
-          npm install -g vercel
-          vercel --token=${{ secrets.VERCEL_TOKEN }} --prod --confirm
