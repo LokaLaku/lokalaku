@@ -1,4 +1,3 @@
-name: Build & Deploy to GitHub Pages
 
 on:
   push:
@@ -83,18 +82,8 @@ jobs:
           name: site-files
           path: dist
 
-  deploy_github:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: Download build files
         uses: actions/download-artifact@v4
         with:
           name: site-files
           path: dist
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          force_orphan: true
