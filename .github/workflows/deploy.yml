@@ -10,45 +10,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      # 3️⃣ Install CLI tools (CSS, JS, HTML minifier)
       - name: Install dependencies
         run: |
           npm install -g terser csso-cli html-minifier-terser
 
-      # 4️⃣ Copy semua file ke folder dist/
       - name: Prepare dist folder
         run: |
+          rm -rf dist
           mkdir dist
-          cp -r * dist/
-          rm -rf dist/.github   # hapus folder workflow biar ga ikut terpublish
+          shopt -s extglob
+          cp -r !(dist|.git|.github) dist/
 
-      # 5️⃣ Minify CSS
       - name: Minify CSS
         run: |
           find dist -type f -name "*.css" ! -name "*.min.css" | while read css; do
             csso "$css" --output "$css"
           done
 
-      # 6️⃣ Minify JS
       - name: Minify JS
         run: |
           find dist -type f -name "*.js" ! -name "*.min.js" | while read js; do
             terser "$js" -o "$js" -c -m
           done
 
-      # 7️⃣ Minify HTML
       - name: Minify HTML
         run: |
           find dist -type f -name "*.html" | while read html; do
@@ -65,7 +59,6 @@ jobs:
               -o "$html" "$html"
           done
 
-      # 8️⃣ Kompres gambar ke WebP TANPA menghapus aslinya
       - name: Compress Images to WebP (keep originals)
         run: |
           if ! command -v cwebp &> /dev/null; then
@@ -75,7 +68,15 @@ jobs:
             cwebp -q 80 "$img" -o "${img%.*}.webp" || true
           done
 
-      # 9️⃣ Upload artifacts untuk deploy
+      - name: Update HTML to use WebP with fallback
+        run: |
+          find dist -type f -name "*.html" | while read html; do
+            # Cari semua <img> dan ubah jadi <picture> + fallback
+            perl -0777 -i -pe '
+              s#<img([^>]*?)src="([^"]+)\.(jpg|jpeg|png)"([^>]*)>#<picture><source srcset="\2.webp" type="image/webp"><img\1src="\2.\3"\4></picture>#gi
+            ' "$html"
+          done
+
       - name: Upload build files
         uses: actions/upload-artifact@v4
         with:
