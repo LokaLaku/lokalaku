@@ -27,24 +27,31 @@ jobs:
         run: |
           npm install -g terser csso-cli html-minifier-terser
 
-      # 4️⃣ Minify CSS
+      # 4️⃣ Copy semua file ke folder dist/
+      - name: Prepare dist folder
+        run: |
+          mkdir dist
+          cp -r * dist/
+          rm -rf dist/.github   # hapus folder workflow biar ga ikut terpublish
+
+      # 5️⃣ Minify CSS
       - name: Minify CSS
         run: |
-          find . -type f -name "*.css" ! -name "*.min.css" | while read css; do
-            csso "$css" --output "${css%.css}.min.css"
+          find dist -type f -name "*.css" ! -name "*.min.css" | while read css; do
+            csso "$css" --output "$css"
           done
 
-      # 5️⃣ Minify JS
+      # 6️⃣ Minify JS
       - name: Minify JS
         run: |
-          find . -type f -name "*.js" ! -name "*.min.js" | while read js; do
-            terser "$js" -o "${js%.js}.min.js" -c -m
+          find dist -type f -name "*.js" ! -name "*.min.js" | while read js; do
+            terser "$js" -o "$js" -c -m
           done
 
-      # 6️⃣ Minify HTML (Safe Mode)
+      # 7️⃣ Minify HTML
       - name: Minify HTML
         run: |
-          find . -type f -name "*.html" | while read html; do
+          find dist -type f -name "*.html" | while read html; do
             html-minifier-terser \
               --collapse-whitespace \
               --remove-comments \
@@ -58,33 +65,22 @@ jobs:
               -o "$html" "$html"
           done
 
-      # 7️⃣ Cek & Install cwebp, Kompres gambar → WebP
-      - name: Check & Install cwebp, Compress Images
+      # 8️⃣ Kompres gambar ke WebP TANPA menghapus aslinya
+      - name: Compress Images to WebP (keep originals)
         run: |
           if ! command -v cwebp &> /dev/null; then
-            echo "cwebp not found, installing..."
             sudo apt-get update && sudo apt-get install -y webp
-          else
-            echo "cwebp already installed: $(cwebp -version)"
           fi
-          echo "Starting image compression..."
-          find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -print0 | \
-          while IFS= read -r -d '' img; do
-            echo "Converting: $img"
-            if cwebp -q 80 "$img" -o "${img%.*}.webp"; then
-              rm "$img"
-              echo "✅ Converted and removed original: $img"
-            else
-              echo "❌ Failed to convert: $img"
-            fi
+          find dist -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | while read img; do
+            cwebp -q 80 "$img" -o "${img%.*}.webp" || true
           done
 
-      # 8️⃣ Upload artifacts untuk deploy
+      # 9️⃣ Upload artifacts untuk deploy
       - name: Upload build files
         uses: actions/upload-artifact@v4
         with:
           name: site-files
-          path: .
+          path: dist
 
   deploy_github:
     needs: build
@@ -94,10 +90,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: site-files
-          path: .
+          path: dist
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          publish_dir: ./dist
           force_orphan: true
