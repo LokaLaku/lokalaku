@@ -36,7 +36,7 @@
     }
     .thank-you-box img.logo {
       max-width:160px;
-      margin-bottom:20px; /* jarak dengan slideshow */
+      margin-bottom:20px;
     }
     .thank-you-box h1 {
       font-size:2em;
@@ -56,12 +56,14 @@
     .carousel-inner {
       width:100%;
       height:300px; /* tinggi slide */
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 4px 12px rgba(0,0,0,.12); /* shadow halus */
     }
     .carousel-inner img {
       width:100%;
       height:100%;
       object-fit:cover;
-      border-radius:12px;
     }
 
     /* Fade lebih halus */
@@ -85,4 +87,27 @@
     <img src="images/logo-header.webp" alt="LokaLaku Logo" class="logo">
 
     <!-- Slideshow otomatis dengan fade + zoom -->
-    <div id="thankYouCarousel" class="carousel slide carousel-fad
+    <div id="thankYouCarousel" class="carousel slide carousel-fade mb-4" data-bs-ride="carousel" data-bs-interval="3000">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="images/slide-img1.webp" alt="Slide 1">
+        </div>
+        <div class="carousel-item">
+          <img src="images/slide-img2.webp" alt="Slide 2">
+        </div>
+        <div class="carousel-item">
+          <img src="images/slide-img3.webp" alt="Slide 3">
+        </div>
+      </div>
+    </div>
+
+    <!-- Text & Button -->
+    <h1>Thank You! 🙏</h1>
+    <p>Your message has been successfully sent.<br>We'll get back to you as soon as possible.</p>
+    <a href="index.html" class="btn btn-success">Back to Homepage</a>
+  </div>
+
+  <!-- Bootstrap JS via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
