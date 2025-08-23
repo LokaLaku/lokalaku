@@ -1,6 +1,24 @@
-## Hi there 👋
+## 🚀 Cara Menjalankan
+1. Clone repository atau download ZIP:
+   ```bash
+   git clone https://github.com/username/FilmLaku21.git
+2. Pastikan semua file berada di struktur folder seperti di atas.
+3. Buka index.html langsung di browser, atau gunakan Live Server di VS Code.
+4. Klik kategori di header untuk filter film.
+5. Klik poster film untuk masuk ke detail → klik Tonton Film untuk membuka player.
 
-LokaLaku is a travel service that offers meaningful and soulful journeys across Indonesia
-We specialize in curated nature tours, cultural experiences, and city explorations — especially in Yogyakarta, Malang, and Bali.
-Whether you're a global traveler seeking hidden gems, or a family looking for joyful getaways, LokaLaku walks with you every step of the way.
+🛠 Teknologi
+1. HTML5
+2. CSS3
+3. JavaScript (Vanilla)
 
+📜 Lisensi
+Proyek ini menggunakan lisensi MIT — bebas digunakan dan dimodifikasi untuk tujuan pribadi atau belajar.
+
+🤝 Kontribusi
+Kontribusi sangat diterima!
+Buat branch baru, lakukan perubahan, dan kirim Pull Request.
+
+📌 Catatan
+Gunakan untuk tujuan pembelajaran dan pengembangan saja.
+Tidak disarankan untuk dipakai sebagai layanan streaming ilegal.
