@@ -324,8 +324,10 @@ footer {
 
 /* --- Komponen Tim di Bagian About (FINAL) --- */
 #about .team-thumb {
-  width: auto;
+  width: 100%; /* Membuat lebar fleksibel */
+  max-width: 360px; /* Menetapkan batas lebar maksimal untuk desktop */
   height: 400px;
+  margin-top: 50px; /* TAMBAHKAN BARIS INI */
   text-align: center;
   background: #ffffff;
   border-radius: 20px;
@@ -334,7 +336,11 @@ footer {
   position: relative;
   display: inline-block;
   vertical-align: top;
-  /* overflow: hidden; DIHAPUS agar animasi tidak terpotong */
+}
+
+/* --- Perbaikan Animasi Terpotong di Desktop --- */
+#about .owl-item:hover {
+  z-index: 10;
 }
 
 #about .team-thumb:hover {
