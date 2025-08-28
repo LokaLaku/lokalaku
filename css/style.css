@@ -324,7 +324,7 @@ footer {
 
 /* --- Komponen Tim di Bagian About (FINAL) --- */
 #about .team-thumb {
-  width: 370px;
+  width: auto;
   height: 400px;
   text-align: center;
   background: #ffffff;
