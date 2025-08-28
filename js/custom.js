@@ -56,7 +56,7 @@ $(document).ready(function() {
           itemsDesktop : [1199,2],
           itemsDesktopSmall : [979,3],
           itemsTablet: [768,1],
-          itemsTabletSmall: [985,1],
+          itemsTabletSmall: [985,2],
           itemsMobile : [479,1],
       });
     });
