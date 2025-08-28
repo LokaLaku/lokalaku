@@ -1,11 +1,3 @@
-/*
-
-Snapshot Template
-http://www.templatemo.com/tm-493-snapshot
-
-*/
-/* Logo Header 
-------------------------------------- */
 logo {
   width: 150px; /* atau sesuai kebutuhan */
   height: auto; /* biar tetap proporsional */
@@ -906,4 +898,170 @@ body.modal-open {
 .modal-list-wrapper ul {
   text-align: left;
   padding-left: 20px;
+}
+
+/* Custom CSS untuk Social Media Tim */
+.single-team-text p {
+    margin-bottom: 5px; /* Mengurangi jarak antara nama dan deskripsi */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-in-out;
+}
+
+.single-team-item:hover .single-team-text p {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.social-links-team {
+    position: absolute; /* Posisi absolut agar bisa diatur di bawah deskripsi */
+    bottom: 0px; /* Sesuaikan ini untuk posisi vertikal, awalnya bisa diatur agar tidak terlihat */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0; /* Awalnya sembunyikan */
+    transition: all 0.5s ease-in-out 0.2s; /* Tambahkan delay setelah deskripsi muncul */
+    display: flex; /* Untuk menata ikon secara horizontal */
+    justify-content: center;
+    width: 100%; /* Agar ikon tetap di tengah */
+    padding-bottom: 20px; /* Jaga jarak dari bawah kotak */
+}
+
+.single-team-item:hover .social-links-team {
+    opacity: 1; /* Muncul saat dihover */
+    bottom: 40px; /* Sesuaikan posisi akhir saat muncul */
+}
+
+.social-links-team a {
+    color: #e35536; /* Warna ikon sosial media */
+    font-size: 20px;
+    margin: 0 8px; /* Jarak antar ikon */
+    transition: all 0.3s ease-in-out;
+}
+
+.social-links-team a:hover {
+    color: #2c4d36; /* Warna ikon saat dihover */
+}
+
+/*
+================================================
+ Pengaturan Komponen Tim (#about .team-thumb)
+================================================
+*/
+
+/* --- Gaya Default Komponen Tim --- */
+
+/* Pengaturan untuk kartu tim utama */
+#about .team-thumb {
+  padding-bottom: 50px;
+}
+
+/* Pengaturan untuk wadah foto */
+#about .team-thumb .image-holder {
+  margin-bottom: 20px;
+}
+
+/* Pengaturan untuk nama */
+#about .team-thumb .heading {
+  margin-bottom: -40px;
+}
+
+/* Pengaturan untuk deskripsi */
+#about .team-thumb .description {
+  margin-bottom: 15px;
+  min-height: 50px;
+}
+
+/* Pengaturan awal untuk ikon sosial media (tersembunyi) */
+.team-social-icons {
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.1s;
+}
+
+/* Pengaturan untuk tautan ikon */
+.team-social-icons a {
+  font-size: 22px;
+  margin: 0 10px;
+  color: #ffffff;
+}
+
+/* --- Efek Hover Komponen Tim --- */
+
+/* Efek saat kursor diarahkan pada nama */
+#about .team-thumb:hover .heading {
+  top: -50px;
+}
+
+/* Efek saat kursor diarahkan pada ikon sosial media (menjadi terlihat) */
+#about .team-thumb:hover .team-social-icons {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Efek saat kursor diarahkan pada tautan ikon */
+.team-social-icons a:hover {
+  color: #e35536;
+  transform: scale(1.1);
+}
+
+
+/*
+================================================
+ Aturan CSS Lain (Struktur .single-team-text)
+================================================
+*/
+
+/* Penyesuaian untuk .single-team-text */
+.single-team-text {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 20px;
+}
+
+/* Pengaturan untuk nama (h3) di dalam .single-team-text */
+.single-team-text h3 {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  transition: margin-top 0.5s ease-in-out;
+}
+
+/* Pengaturan untuk deskripsi (p) di dalam .single-team-text */
+.single-team-text p {
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Efek hover untuk gambar di dalam struktur .single-team-item */
+.single-team-item:hover .team-image {
+  transform: translateY(-5px);
+}
+
+/*
+==============================================
+ Pengaturan untuk Embed Video YouTube
+==============================================
+*/
+.video-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 700px;      /* TAMBAHKAN: Batasi lebar maksimum video */
+  padding-top: 56.25%;   /* Aspect Ratio 16:9 */
+  margin: 30px auto 0;   /* UBAH: Menjaga jarak atas & membuatnya center */
+  border-radius: 8px;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
