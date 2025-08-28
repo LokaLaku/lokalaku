@@ -155,3 +155,9 @@
 		min-width: 300px;
 	}
 }
+
+/* --- Penyesuaian Sudut Tumpul untuk Kartu Destinasi --- */
+#destination .grid figure {
+  border-radius: 20px; /* Anda bisa sesuaikan nilai ini */
+  overflow: hidden;    /* Penting agar sudut gambar ikut melengkung */
+}
