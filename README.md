@@ -69,3 +69,26 @@ Untuk menjalankan proyek ini di mesin lokal Anda, ikuti langkah-langkah berikut:
     Untuk pengalaman pengembangan terbaik, disarankan menggunakan ekstensi **Live Server** di Visual Studio Code untuk melihat perubahan secara *real-time*.
 
 ## 📂 Struktur Proyek
+
+.
+├── css/                # Berisi semua file CSS (Bootstrap, Owl Carousel, style kustom)
+├── images/             # Berisi semua gambar dan aset visual
+├── js/                 # Berisi semua file JavaScript (jQuery, Bootstrap, skrip kustom)
+├── index.html          # File HTML utama
+├── thank-you.html      # Halaman setelah pengiriman formulir
+└── README.md           # File ini
+
+## 📞 Kontak
+
+Jika Anda tertarik untuk berkolaborasi atau memiliki pertanyaan, jangan ragu untuk menghubungi kami:
+
+-   **Instagram:** [@lokalaku_trip](https://www.instagram.com/lokalaku_trip/)
+-   **WhatsApp:** [+62 813-3142-1031](https://wa.me/6281331421031)
+-   **Email:** Kirim pesan melalui [formulir kontak](https://lokalaku.vercel.app/#contact) di website.
+
+## 📄 Lisensi
+
+Proyek ini dilisensikan di bawah Lisensi MIT. Lihat file `LICENSE` untuk detail lebih lanjut.
+
+---
+Dibuat dengan ❤️ oleh tim LokaLaku.
