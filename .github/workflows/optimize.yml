@@ -1,0 +1,57 @@
+name: Website Optimization CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  optimize-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Langkah 1: Checkout kode dari repositori
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Langkah 2: Minify HTML, CSS, dan JavaScript (tidak perlu install apapun)
+      - name: Minify HTML, CSS, JS
+        uses: preactions/minify@v3
+        with:
+          HTML_OPTIONS: '--collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype'
+          CSS_OPTIONS: '--level 2'
+          JS_OPTIONS: '--mangle'
+
+      # Langkah 3: Kompresi Gambar ke WebP (tidak perlu install apapun)
+      - name: Compress Images to WebP
+        uses: image-actions/compress-images@v2
+        with:
+          from: 'images/*.{jpg,png}'
+          to: 'images/'
+          webp-quality: '85'
+          convert-to: 'webp'
+          # BARIS DI BAWAH INI YANG AKAN MENGHAPUS FILE .JPG DAN .PNG ASLI
+          remove-origin: true 
+
+      # Langkah 4: Update Tag <img> di HTML
+      - name: Update Image Tags to .webp
+        run: |
+          find . -type f -name "*.html" -print0 | while IFS= read -r -d $'\0' file; do
+            sed -i 's/\.jpg/\.webp/g' "$file"
+            sed -i 's/\.png/\.webp/g' "$file"
+          done
+        shell: bash
+
+      # Langkah 5: Commit perubahan kembali ke repositori
+      - name: Commit Optimized Files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Optimize website assets (minify, compress images)" -a
+            git push
+          else
+            echo "No changes to commit."
+          fi
+        shell: bash
