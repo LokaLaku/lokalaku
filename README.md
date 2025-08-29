@@ -7,7 +7,7 @@
 
 Ini adalah repositori untuk kode sumber website LokaLaku Trip, sebuah platform layanan perjalanan yang dirancang untuk menawarkan perjalanan yang penuh makna dan berkesan di seluruh Indonesia.
 
-![LokaLaku Trip Screenshot](./images/lokalaku-screenshot.png)
+![LokaLaku Trip Screenshot](./images/lokalaku-screenshot.webp)
 *(Catatan: Disarankan untuk menambahkan screenshot homepage website Anda di sini)*
 
 ## 📜 Tentang Proyek
@@ -70,13 +70,17 @@ Untuk menjalankan proyek ini di mesin lokal Anda, ikuti langkah-langkah berikut:
 
 ## 📂 Struktur Proyek
 
+````
+
 .
-├── css/                # Berisi semua file CSS (Bootstrap, Owl Carousel, style kustom)
-├── images/             # Berisi semua gambar dan aset visual
-├── js/                 # Berisi semua file JavaScript (jQuery, Bootstrap, skrip kustom)
-├── index.html          # File HTML utama
-├── thank-you.html      # Halaman setelah pengiriman formulir
-└── README.md           # File ini
+├── css/                \# Berisi semua file CSS (Bootstrap, Owl Carousel, style kustom)
+├── images/             \# Berisi semua gambar dan aset visual
+├── js/                 \# Berisi semua file JavaScript (jQuery, Bootstrap, skrip kustom)
+├── index.html          \# File HTML utama
+├── thank-you.html      \# Halaman setelah pengiriman formulir
+└── README.md           \# File ini
+
+```
 
 ## 📞 Kontak
 
