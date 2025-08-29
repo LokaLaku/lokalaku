@@ -1,0 +1,77 @@
+name: Comprehensive CI Workflow
+
+# Pemicu untuk menjalankan workflow ini
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Berjalan setiap Minggu jam 3 pagi WIB
+    # PERINGATAN: Jadwal ini akan menjalankan SEMUA job di bawah ini.
+    - cron: '0 20 * * 0'
+
+jobs:
+  # JOB 1: Optimasi Aset (Minify & Kompresi Gambar)
+  optimize:
+    name: Optimize Website Assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Minify Website Assets
+        uses: wizarrc/minify-action@v1
+
+      - name: Compress Images
+        uses: calibreapp/image-actions@v1
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          compressOnly: true
+
+      - name: Commit Optimized Files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Optimize website assets (minify, compress images)" -a
+            git push
+          else
+            echo "No new changes to commit."
+          fi
+        shell: bash
+
+  # JOB 2: Linter untuk Kualitas Kode
+  lint:
+    name: Lint Code Base
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Super-Linter
+        uses: github/super-linter@v5
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # JOB 3: Pengecek Tautan Rusak
+  check_links:
+    name: Check Broken Links
+    # Job ini butuh job 'optimize' selesai agar bisa memeriksa versi terbaru
+    needs: optimize
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run Lychee Link Checker
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: --verbose --no-progress './**/*.html' 'https://lokalaku.vercel.app'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
