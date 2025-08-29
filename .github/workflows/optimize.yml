@@ -12,37 +12,25 @@ jobs:
     steps:
       # Langkah 1: Checkout kode dari repositori
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # Langkah 2: Minify HTML, CSS, dan JavaScript (tidak perlu install apapun)
-      - name: Minify HTML, CSS, JS
-        uses: preactions/minify@v3
+      # Langkah 2: Minify HTML, CSS, dan JavaScript (MENGGUNAKAN ACTION BARU)
+      - name: Minify Website Assets
+        uses: actions-minify/actions-minify@v3
+
+      # Langkah 3: Kompresi Gambar (MENGGUNAKAN ACTION BARU)
+      # Action ini akan mencari semua gambar, mengompresnya, dan membuat commit baru.
+      # Action ini secara otomatis menangani konversi ke WebP jika memungkinkan
+      # dan juga menghapus file asli jika sudah ada versi .webp nya.
+      - name: Compress Images
+        uses: calibreapp/image-actions@v1.1.0
         with:
-          HTML_OPTIONS: '--collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype'
-          CSS_OPTIONS: '--level 2'
-          JS_OPTIONS: '--mangle'
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          compressOnly: true # Hanya kompresi, tidak membuat Pull Request
 
-      # Langkah 3: Kompresi Gambar ke WebP (tidak perlu install apapun)
-      - name: Compress Images to WebP
-        uses: image-actions/compress-images@v2
-        with:
-          from: 'images/*.{jpg,png}'
-          to: 'images/'
-          webp-quality: '85'
-          convert-to: 'webp'
-          # BARIS DI BAWAH INI YANG AKAN MENGHAPUS FILE .JPG DAN .PNG ASLI
-          remove-origin: true 
-
-      # Langkah 4: Update Tag <img> di HTML
-      - name: Update Image Tags to .webp
-        run: |
-          find . -type f -name "*.html" -print0 | while IFS= read -r -d $'\0' file; do
-            sed -i 's/\.jpg/\.webp/g' "$file"
-            sed -i 's/\.png/\.webp/g' "$file"
-          done
-        shell: bash
-
-      # Langkah 5: Commit perubahan kembali ke repositori
+      # Langkah 4: Commit perubahan kembali ke repositori (jika ada)
+      # Langkah ini sekarang ditangani oleh action calibreapp/image-actions dan actions-minify
+      # namun kita bisa tambahkan langkah commit manual untuk memastikan semua perubahan ter-commit
       - name: Commit Optimized Files
         run: |
           git config --local user.email "action@github.com"
@@ -52,6 +40,6 @@ jobs:
             git commit -m "Optimize website assets (minify, compress images)" -a
             git push
           else
-            echo "No changes to commit."
+            echo "No new changes to commit."
           fi
         shell: bash
