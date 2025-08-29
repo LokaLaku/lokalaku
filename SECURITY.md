@@ -1,57 +1,55 @@
-# Kebijakan Keamanan (Security Policy)
+# Security Policy
 
-Kami menjaga keamanan proyek LokaLaku Trip dengan serius. Kami menghargai bantuan dari komunitas dan peneliti keamanan untuk melaporkan kerentanan secara bertanggung jawab. Semua laporan akan kami tinjau dan tanggapi sesegera mungkin.
+We take the security of the LokaLaku Trip project seriously. We appreciate the help of the community and security researchers in responsibly reporting vulnerabilities. All reports will be reviewed and addressed as soon as possible.
 
-## Versi yang Didukung
+## Supported Versions
 
-Karena ini adalah website statis yang terus diperbarui, kami hanya memberikan dukungan keamanan untuk versi terbaru yang ada di cabang `main`.
+As this is a continuously updated static website, we only provide security support for the latest version available on the `main` branch.
 
-| Versi   | Didukung          |
-| ------- | ----------------- |
+| Version | Supported          |
+| ------- | ------------------ |
 | `main`  | :white_check_mark: |
 
-## 🛡️ Melaporkan Kerentanan
+## 🛡️ Reporting a Vulnerability
 
-**Tolong jangan melaporkan kerentanan keamanan melalui Isu (Issues) publik di GitHub.**
+**Please do not report security vulnerabilities through public GitHub Issues.**
 
-Jika Anda menemukan masalah keamanan, silakan laporkan secara pribadi melalui email ke:
+If you discover a security issue, please report it privately via email to:
 
-**`kontak.lokalaku@email.com`**
+**`lokalakutrip@gmail.com`**
 
-_[Harap ganti alamat email di atas dengan alamat email pribadi yang ingin Anda gunakan untuk menerima laporan keamanan]_
+Please include as much information as possible in your report to help us reproduce and validate the issue.
 
-Harap sertakan informasi sebanyak mungkin dalam laporan Anda agar kami dapat mereproduksi dan memvalidasi masalah tersebut.
+### Information to Include
 
-### Informasi yang Disertakan
+* A detailed description of the vulnerability found.
+* Clear steps to reproduce the vulnerability.
+* The potential impact of the vulnerability.
+* Suggested fixes or mitigations (if you have them).
 
-* Deskripsi detail tentang kerentanan yang ditemukan.
-* Langkah-langkah yang jelas untuk mereproduksi kerentanan tersebut.
-* Dampak potensial dari kerentanan tersebut.
-* Saran perbaikan atau mitigasi (jika Anda memilikinya).
+## Our Commitment
 
-## Komitmen Kami
+After receiving a vulnerability report, we will strive to:
 
-Setelah menerima laporan kerentanan, kami akan berusaha untuk:
+1.  Acknowledge receipt of your report as soon as possible (usually within 48 hours).
+2.  Confirm the existence of the vulnerability and provide an estimated timeline for a fix.
+3.  Notify you when the fix has been released.
+4.  Provide credit or thanks to the reporter in the release notes (with your consent).
 
-1.  Mengakui penerimaan laporan Anda sesegera mungkin (biasanya dalam 48 jam).
-2.  Mengkonfirmasi keberadaan kerentanan dan memberikan perkiraan waktu untuk perbaikan.
-3.  Memberi tahu Anda ketika perbaikan telah dirilis.
-4.  Memberikan kredit atau ucapan terima kasih kepada pelapor di catatan rilis (jika Anda setuju).
+## Scope
 
-## Ruang Lingkup
+This policy applies to the code within this repository.
 
-Kebijakan ini berlaku untuk kode yang ada di dalam repositori ini.
+### In Scope:
 
-### Termasuk dalam Ruang Lingkup:
+* Cross-Site Scripting (XSS) vulnerabilities.
+* Use of third-party libraries (e.g., jQuery, Bootstrap) with known vulnerabilities.
+* "Mixed Content" issues (loading HTTP assets on an HTTPS page).
 
-* Kerentanan *Cross-Site Scripting* (XSS).
-* Penggunaan pustaka/library pihak ketiga (misalnya, jQuery, Bootstrap) yang memiliki kerentanan yang diketahui.
-* Masalah *"Mixed Content"* (memuat aset HTTP di halaman HTTPS).
+### Out of Scope:
 
-### Tidak Termasuk dalam Ruang Lingkup:
+* Vulnerabilities in third-party services we use (e.g., Formspree, Vercel, Google Fonts). These issues should be reported directly to the service provider.
+* Spam or Phishing reports not directly related to the code in this repository.
+* Best practice suggestions (e.g., HTTP header configurations) that do not indicate an active vulnerability.
 
-* Kerentanan pada layanan pihak ketiga yang kami gunakan (misalnya, Formspree, Vercel, Google Fonts). Masalah ini harus dilaporkan langsung ke penyedia layanan tersebut.
-* Laporan Spam atau Phishing yang tidak terkait langsung dengan kode di repositori ini.
-* Saran praktik terbaik (misalnya, konfigurasi header HTTP) yang tidak menunjukkan adanya kerentanan aktif.
-
-Terima kasih telah membantu menjaga keamanan LokaLaku Trip.
+Thank you for helping keep LokaLaku Trip secure.
