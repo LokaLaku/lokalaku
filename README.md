@@ -8,7 +8,6 @@
 Ini adalah repositori untuk kode sumber website LokaLaku Trip, sebuah platform layanan perjalanan yang dirancang untuk menawarkan perjalanan yang penuh makna dan berkesan di seluruh Indonesia.
 
 ![LokaLaku Trip Screenshot](./images/lokalaku-screenshot.webp)
-*(Catatan: Disarankan untuk menambahkan screenshot homepage website Anda di sini)*
 
 ## 📜 Tentang Proyek
 
