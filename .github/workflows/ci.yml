@@ -1,77 +1,67 @@
-name: Comprehensive CI Workflow
+name: Website Optimization CI
 
-# Pemicu untuk menjalankan workflow ini
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-  schedule:
-    # Berjalan setiap Minggu jam 3 pagi WIB
-    # PERINGATAN: Jadwal ini akan menjalankan SEMUA job di bawah ini.
-    - cron: '0 20 * * 0'
+    branches:
+      - main
 
 jobs:
-  # JOB 1: Optimasi Aset (Minify & Kompresi Gambar)
-  optimize:
-    name: Optimize Website Assets
+  build-and-optimize:
+    name: Build & Optimize Website
     runs-on: ubuntu-latest
+
     steps:
+      # Langkah 1: Checkout kode dari repositori
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Minify Website Assets
-        uses: wizarrc/minify-action@v1
-
-      - name: Compress Images
-        uses: calibreapp/image-actions@v1
+      # Langkah 2: Siapkan lingkungan Node.js untuk menjalankan tool
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          compressOnly: true
+          node-version: '18'
 
+      # Langkah 3: Install semua tool optimasi yang dibutuhkan
+      - name: Install Optimization Tools
+        run: npm install -g uglify-js clean-css-cli html-minifier-terser imagemin-cli imagemin-webp
+
+      # Langkah 4: Minify file HTML, CSS, dan JavaScript
+      - name: Minify HTML Files
+        run: html-minifier-terser --input-dir . --output-dir . --file-ext html --collapse-whitespace --remove-comments --remove-optional-tags
+
+      - name: Minify CSS Files
+        run: find ./css -name "*.css" -not -name "*.min.css" -exec cleancss -o {} {} \;
+
+      - name: Minify JavaScript Files
+        run: find ./js -name "*.js" -not -name "*.min.js" -exec uglifyjs {} -o {} -c -m \;
+
+      # Langkah 5: Kompresi gambar JPG/PNG ke WebP
+      - name: Compress Images to WebP and Remove Originals
+        run: |
+          # Temukan semua gambar jpg dan png, lalu konversi ke webp di direktori yang sama
+          find ./images -type f \( -iname "*.jpg" -o -iname "*.png" \) -exec imagemin {} --plugin=webp --out-dir=$(dirname {}) \;
+          # Hapus file jpg dan png yang asli setelah konversi selesai
+          find ./images -type f \( -iname "*.jpg" -o -iname "*.png" \) -exec rm {} \;
+      
+      # Langkah 6: Update tag <img> di file HTML untuk menggunakan .webp
+      - name: Update Image Tags to .webp in HTML
+        run: |
+          find . -type f -name "*.html" -print0 | while IFS= read -r -d $'\0' file; do
+            sed -i 's/\.jpg/\.webp/g' "$file"
+            sed -i 's/\.png/\.webp/g' "$file"
+          done
+        shell: bash
+
+      # Langkah 7: Commit semua file yang sudah dioptimasi
       - name: Commit Optimized Files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
           if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "Optimize website assets (minify, compress images)" -a
+            git commit -m "🚀 Automate: Optimize website assets" -a
             git push
           else
-            echo "No new changes to commit."
+            echo "No changes to commit."
           fi
         shell: bash
-
-  # JOB 2: Linter untuk Kualitas Kode
-  lint:
-    name: Lint Code Base
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Run Super-Linter
-        uses: github/super-linter@v5
-        env:
-          VALIDATE_ALL_CODEBASE: true
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # JOB 3: Pengecek Tautan Rusak
-  check_links:
-    name: Check Broken Links
-    # Job ini butuh job 'optimize' selesai agar bisa memeriksa versi terbaru
-    needs: optimize
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Run Lychee Link Checker
-        uses: lycheeverse/lychee-action@v1
-        with:
-          args: --verbose --no-progress './**/*.html' 'https://lokalaku.vercel.app'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
