@@ -1,97 +1,97 @@
-# LokaLaku Trip - Website Perjalanan Wisata
+# LokaLaku Trip - Travel Website
 
 ### Where Every Journey Finds Its Soul
 
 [![Website Status](https://img.shields.io/website?url=https%3A%2F%2Flokalaku.vercel.app&up_message=online&down_message=offline&label=lokalaku.vercel.app)](https://lokalaku.vercel.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Ini adalah repositori untuk kode sumber website LokaLaku Trip, sebuah platform layanan perjalanan yang dirancang untuk menawarkan perjalanan yang penuh makna dan berkesan di seluruh Indonesia.
+This is the code repository for the LokaLaku Trip website, a travel service platform designed to offer meaningful and memorable journeys across Indonesia.
 
 ![LokaLaku Trip Screenshot](./images/lokalaku-screenshot.webp)
 
-## 📜 Tentang Proyek
+## 📜 About The Project
 
-**LokaLaku** adalah website statis yang responsif dan menarik secara visual, dibangun untuk memamerkan berbagai paket wisata di Indonesia, dengan fokus pada destinasi seperti Yogyakarta, Malang, dan Bali. Nama "LokaLaku" berasal dari gabungan kata Sansekerta **"Loka"** (dunia/tempat) dan kata Jawa **"Laku"** (perjalanan/tindakan), yang mencerminkan filosofi untuk secara aktif menjelajahi dunia dan terhubung dengan keindahan, budaya, serta keragaman setiap destinasi.
+**LokaLaku** is a responsive and visually engaging static website built to showcase various tour packages in Indonesia, with a focus on destinations like Yogyakarta, Malang, and Bali. The name "LokaLaku" is a blend of the Sanskrit word **"Loka"** (world/place) and the Javanese word **"Laku"** (journey/action), reflecting a philosophy of actively exploring the world and connecting with the beauty, culture, and diversity of each destination.
 
-Website ini berfungsi sebagai halaman arahan (landing page) untuk menarik calon pelanggan, memberikan informasi detail tentang paket wisata, dan menyediakan cara mudah untuk menghubungi tim melalui WhatsApp atau formulir kontak.
+This website serves as a landing page to attract potential customers, provide detailed information about tour packages, and offer an easy way to contact the team via WhatsApp or a contact form.
 
 **🔗 Live Demo:** [**https://lokalaku.vercel.app/**](https://lokalaku.vercel.app/)
 
-## ✨ Fitur Utama
+## ✨ Features
 
--   **Desain Responsif:** Tampilan yang optimal di berbagai perangkat, mulai dari desktop hingga ponsel.
--   **Navigasi Halaman Tunggal:** Pengalaman pengguna yang mulus dengan navigasi *smooth-scrolling*.
--   **Galeri Destinasi Interaktif:** Tampilan paket wisata dalam format grid dengan efek hover yang menarik.
--   **Detail Paket dalam Modal:** Jendela pop-up (modal) yang menampilkan informasi rinci setiap paket, lengkap dengan *slideshow* gambar.
--   **Profil Tim:** Bagian "Tentang Kami" yang memperkenalkan anggota tim LokaLaku dengan tautan media sosial mereka.
--   **Video Tersemat:** Menampilkan video sinematik dari YouTube untuk menarik perhatian pengunjung.
--   **Formulir Kontak Fungsional:** Terintegrasi dengan [Formspree](https://formspree.io/) untuk pengiriman pesan yang mudah.
--   **Integrasi WhatsApp:** Tombol ajakan (call-to-action) yang langsung mengarahkan pengguna ke obrolan WhatsApp untuk pemesanan.
--   **Animasi Halus:** Menggunakan WOW.js untuk menganimasikan elemen saat digulir (scroll).
--   **SEO-Friendly:** Dilengkapi dengan meta tag yang relevan untuk optimasi mesin pencari.
+-   **Responsive Design:** Optimized for all devices, from desktops to mobile phones.
+-   **Single-Page Navigation:** A smooth user experience with smooth-scrolling navigation.
+-   **Interactive Destination Gallery:** A grid-based layout for tour packages with attractive hover effects.
+-   **Package Details in Modals:** Pop-up windows (modals) that display detailed information for each package, complete with an image slideshow.
+-   **Team Showcase:** An "About Us" section that introduces the LokaLaku team members with links to their social media.
+-   **Embedded Video:** Features a cinematic YouTube video to capture visitors' attention.
+-   **Functional Contact Form:** Integrated with [Formspree](https://formspree.io/) for easy message submission.
+-   **WhatsApp Integration:** Call-to-action buttons that direct users to a WhatsApp chat for booking.
+-   **Smooth Animations:** Utilizes WOW.js to animate elements on scroll.
+-   **SEO-Friendly:** Equipped with relevant meta tags for search engine optimization.
 
-## 🛠️ Teknologi yang Digunakan
+## 🛠️ Technologies Used
 
-| Kategori            | Teknologi                                                                                                  |
-| ------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Frontend** | `HTML5`, `CSS3`, `JavaScript (ES6)`                                                                        |
-| **Framework & Perpustakaan** | `Bootstrap 3`, `jQuery`, `Vegas.js`, `Owl Carousel 2`, `WOW.js`, `Animate.css`, `Font Awesome 6` |
-| **Layanan & Alat** | `Formspree` (untuk formulir kontak), `Google Fonts`, `Google AdSense`, `Vercel` (untuk hosting)             |
+| Category                 | Technology                                                                                                  |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| **Frontend** | `HTML5`, `CSS3`, `JavaScript (ES6)`                                                                         |
+| **Frameworks & Libraries** | `Bootstrap 3`, `jQuery`, `Vegas.js`, `Owl Carousel 2`, `WOW.js`, `Animate.css`, `Font Awesome 6` |
+| **Services & Tools** | `Formspree` (for contact form), `Google Fonts`, `Google AdSense`, `Vercel` (for hosting)      |
 
-## 🚀 Cara Menjalankan Proyek Secara Lokal
+## 🚀 Getting Started / Local Setup
 
-Untuk menjalankan proyek ini di mesin lokal Anda, ikuti langkah-langkah berikut:
+To run this project on your local machine, follow these steps:
 
-1.  **Clone repositori ini:**
+1.  **Clone this repository:**
     ```bash
-    git clone [https://github.com/username/nama-repo.git](https://github.com/username/nama-repo.git)
+    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
     ```
 
-2.  **Masuk ke direktori proyek:**
+2.  **Navigate into the project directory:**
     ```bash
-    cd nama-repo
+    cd your-repo-name
     ```
 
-3.  **Buka file `index.html`:**
-    Cukup buka file `index.html` di browser favorit Anda.
+3.  **Open the `index.html` file:**
+    Simply open the `index.html` file in your favorite browser.
     ```bash
-    # Pada Windows
+    # On Windows
     start index.html
 
-    # Pada macOS
+    # On macOS
     open index.html
 
-    # Pada Linux
+    # On Linux
     xdg-open index.html
     ```
 
-    Untuk pengalaman pengembangan terbaik, disarankan menggunakan ekstensi **Live Server** di Visual Studio Code untuk melihat perubahan secara *real-time*.
+    For the best development experience, it is recommended to use the **Live Server** extension in Visual Studio Code to see changes in real-time.
 
-## 📂 Struktur Proyek
+## 📂 Project Structure
 
 ````
 
 .
-├── css/                \# Berisi semua file CSS (Bootstrap, Owl Carousel, style kustom)
-├── images/             \# Berisi semua gambar dan aset visual
-├── js/                 \# Berisi semua file JavaScript (jQuery, Bootstrap, skrip kustom)
-├── index.html          \# File HTML utama
-├── thank-you.html      \# Halaman setelah pengiriman formulir
-└── README.md           \# File ini
+├── css/                \# Contains all CSS files (Bootstrap, Owl Carousel, custom styles)
+├── images/             \# Contains all images and visual assets
+├── js/                 \# Contains all JavaScript files (jQuery, Bootstrap, custom scripts)
+├── index.html          \# The main HTML file
+├── thank-you.html      \# Page displayed after form submission
+└── README.md           \# This file
 
 ```
 
-## 📞 Kontak
+## 📞 Contact
 
-Jika Anda tertarik untuk berkolaborasi atau memiliki pertanyaan, jangan ragu untuk menghubungi kami:
+If you're interested in collaborating or have any questions, feel free to get in touch:
 
 -   **Instagram:** [@lokalaku_trip](https://www.instagram.com/lokalaku_trip/)
 -   **WhatsApp:** [+62 813-3142-1031](https://wa.me/6281331421031)
--   **Email:** Kirim pesan melalui [formulir kontak](https://lokalaku.vercel.app/#contact) di website.
+-   **Email:** Send a message via the [contact form](https://lokalaku.vercel.app/#contact) on the website.
 
-## 📄 Lisensi
+## 📄 License
 
-Proyek ini dilisensikan di bawah Lisensi MIT. Lihat file `LICENSE` untuk detail lebih lanjut.
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
 
 ---
-Dibuat dengan ❤️ oleh tim LokaLaku.
+Made with ❤️ by the LokaLaku team.
