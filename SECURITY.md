@@ -1,51 +1,57 @@
-# Security Policy
+# Kebijakan Keamanan (Security Policy)
 
-## Supported Versions
+Kami menjaga keamanan proyek LokaLaku Trip dengan serius. Kami menghargai bantuan dari komunitas dan peneliti keamanan untuk melaporkan kerentanan secara bertanggung jawab. Semua laporan akan kami tinjau dan tanggapi sesegera mungkin.
 
-The following versions are currently being supported with security updates:
+## Versi yang Didukung
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.x     | ✅ Yes             |
-| < 1.0   | ❌ No              |
+Karena ini adalah website statis yang terus diperbarui, kami hanya memberikan dukungan keamanan untuk versi terbaru yang ada di cabang `main`.
 
----
+| Versi   | Didukung          |
+| ------- | ----------------- |
+| `main`  | :white_check_mark: |
 
-## Reporting a Vulnerability
+## 🛡️ Melaporkan Kerentanan
 
-If you believe you have discovered a security vulnerability in this project, we strongly encourage you to report it responsibly.
+**Tolong jangan melaporkan kerentanan keamanan melalui Isu (Issues) publik di GitHub.**
 
-### 🔐 How to Report
+Jika Anda menemukan masalah keamanan, silakan laporkan secara pribadi melalui email ke:
 
-Please email your report to:
+**`kontak.lokalaku@email.com`**
 
-**📧 lokalakutrip@gmail.com.com**  
-(Replace with your actual email address or security team contact)
+_[Harap ganti alamat email di atas dengan alamat email pribadi yang ingin Anda gunakan untuk menerima laporan keamanan]_
 
-Alternatively, you can open a [private GitHub security advisory](https://github.com/[your-repo]/security/advisories).
+Harap sertakan informasi sebanyak mungkin dalam laporan Anda agar kami dapat mereproduksi dan memvalidasi masalah tersebut.
 
----
+### Informasi yang Disertakan
 
-## What to Include in Your Report
+* Deskripsi detail tentang kerentanan yang ditemukan.
+* Langkah-langkah yang jelas untuk mereproduksi kerentanan tersebut.
+* Dampak potensial dari kerentanan tersebut.
+* Saran perbaikan atau mitigasi (jika Anda memilikinya).
 
-- Description of the vulnerability
-- Steps to reproduce
-- Impact and potential severity
-- Suggested remediation (if any)
-- Any relevant logs, code snippets, or screenshots
+## Komitmen Kami
 
----
+Setelah menerima laporan kerentanan, kami akan berusaha untuk:
 
-## Response Timeline
+1.  Mengakui penerimaan laporan Anda sesegera mungkin (biasanya dalam 48 jam).
+2.  Mengkonfirmasi keberadaan kerentanan dan memberikan perkiraan waktu untuk perbaikan.
+3.  Memberi tahu Anda ketika perbaikan telah dirilis.
+4.  Memberikan kredit atau ucapan terima kasih kepada pelapor di catatan rilis (jika Anda setuju).
 
-We aim to respond to security reports within **72 hours**, and patch verified issues within **7–14 business days**.
+## Ruang Lingkup
 
----
+Kebijakan ini berlaku untuk kode yang ada di dalam repositori ini.
 
-## Disclosure Policy
+### Termasuk dalam Ruang Lingkup:
 
-We follow **responsible disclosure**. Please **do not publicly disclose** vulnerabilities without coordination with our team.
+* Kerentanan *Cross-Site Scripting* (XSS).
+* Penggunaan pustaka/library pihak ketiga (misalnya, jQuery, Bootstrap) yang memiliki kerentanan yang diketahui.
+* Masalah *"Mixed Content"* (memuat aset HTTP di halaman HTTPS).
 
----
+### Tidak Termasuk dalam Ruang Lingkup:
 
-Thank you for helping keep this project and our users safe!
+* Kerentanan pada layanan pihak ketiga yang kami gunakan (misalnya, Formspree, Vercel, Google Fonts). Masalah ini harus dilaporkan langsung ke penyedia layanan tersebut.
+* Laporan Spam atau Phishing yang tidak terkait langsung dengan kode di repositori ini.
+* Saran praktik terbaik (misalnya, konfigurasi header HTTP) yang tidak menunjukkan adanya kerentanan aktif.
+
+Terima kasih telah membantu menjaga keamanan LokaLaku Trip.
