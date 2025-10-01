@@ -1,0 +1,14 @@
+# robots.txt for lokalaku.vercel.app
+
+User-agent: *
+Allow: /
+
+# Disallow folder/file yang tidak penting untuk indexing
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /tmp/
+Disallow: /private/
+
+# Sitemap utama
+Sitemap: https://lokalaku.vercel.app/sitemap.xml
